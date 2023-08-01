@@ -1,0 +1,32 @@
+1 thread for printing
+
+2 can init philos be a bzero type of function?
+3 add malloc fail protection to init philos
+
+
+
+
+
+data structure questions:
+
+-right now data has an array of philo structs, is this the right way to go about it?
+
+
+
+
+
+
+
+-compiling with sanitize thread
+-
+
+
+-have monitor and printing thread
+
+
+-have 1 wirting mutex that gets locked every time u wanna msg, and only get ur timestamp after
+locking that mutex
+
+
+
+-left off at
