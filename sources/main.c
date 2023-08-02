@@ -11,8 +11,7 @@
 /* ************************************************************************** */
 
 // mem management notes
-// data = on stack
-// philos = heap
+// on heap = philos, fork array, pthread ptrs
 
 #include "philo.h"
 
@@ -24,8 +23,7 @@ int	main(int argc, char **argv)
 {
 	t_data		data;
 
-	if (argc < 5 || argc > 6 || !data_init(argc, argv, &data) || \
-		!philo_init(&data))
+	if (argc < 5 || argc > 6 || !data_init(argc, argv, &data))
 		return (printf(C_RED PARSE_ERROR));
 	pthread_mutex_init(&data.print_lock, NULL);
 	if (!print_args(&data))

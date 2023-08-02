@@ -12,16 +12,26 @@
 
 #include "philo.h"
 
+static bool	parsing(t_data *data, char **argv, int argc);
 static int	philatoi(char *str);
 bool		philo_init(t_data	*data);
+static bool	init_all_mutex(t_data *data);
+
+// move all mutex locking to own function?
+bool	data_init(int argc, char **argv, t_data *data)
+{
+	if (!parsing || !philo_init(data) || !init_all_mutex(data))
+		return (false);
+	data->all_alive = true;
+	// start all threads (lock untill theyre all started) + start_time
+}
 
 //so sad C doesn't allow you to while loop through struct members
-bool	data_init(int argc, char **argv, t_data *data)
+static bool	parsing(t_data *data, char **argv, int argc)
 {
 	int	i;
 
 	i = 1;
-	data->all_alive = true;
 	data->nbr_of_philos = philatoi(argv[i++]);
 	data->time_till_death = philatoi(argv[i++]);
 	data->time_to_eat = philatoi(argv[i++]);
@@ -34,8 +44,6 @@ bool	data_init(int argc, char **argv, t_data *data)
 	if (data->nbr_of_philos == 0 || data->time_till_death == 0 || \
 	data->time_to_eat == 0 || data->sleep_time == 0 || data->meals_needed == 0)
 		return (false);
-	if (!philo_init(data))
-		return (false);
 	return (true);
 }
 
@@ -45,7 +53,7 @@ bool	philo_init(t_data	*data)
 	t_philo			*philos;
 
 	i = 0;
-	data->thread_ids = malloc(sizeof(pthread_t) * data->nbr_of_philos);
+	data->thread_ids = malloc(sizeof(pthread_t *) * data->nbr_of_philos);
 	philos = malloc(sizeof(t_philo) * (data->nbr_of_philos));
 	if (!philos || !data->thread_ids)
 		return (false);
@@ -84,4 +92,23 @@ static int	philatoi(char *str)
 		i++;
 	}
 	return ((int)ret);
+}
+
+static bool	init_all_mutex(t_data *data)
+{
+	int		i;
+
+	i = 0;
+	pthread_mutex_init(data->print_lock, NULL);
+	pthread_mutex_init(data->meal_lock, NULL);
+	pthread_mutex_init(data->death_lock, NULL);
+	data->forks = malloc(sizeof(pthread_mutex_t *) * (data->nbr_of_philos - 1));
+	if (!data->forks)
+		return (false);
+	while (i < data->nbr_of_philos)
+	{
+		pthread_mutex_init(data->forks[i], NULL);
+		i++;
+	}
+	return (true);
 }

@@ -34,7 +34,7 @@ typedef struct s_philo
 	int				id;
 	int				meals_eaten;
 	bool			full;
-	pthread_mutex_t	*meal_check;
+
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
 	long			last_mealtime;
@@ -60,11 +60,13 @@ struct s_data
 	int				full_philos;
 	long			start_time;
 	bool			all_alive;
-	bool			finish_when_full;
-	pthread_mutex_t	print_lock;
-	pthread_mutex_t	*forks;
+	// bool			finish_when_full;
+	pthread_mutex_t	*print_lock;
+	pthread_mutex_t	*meal_lock;
+	pthread_mutex_t	*death_lock;
+	pthread_mutex_t	**forks;
 	t_philo			*philo_arr;
-	pthread_t		*thread_ids;
+	pthread_t		**thread_ids;
 };
 
 bool	data_init(int argc, char **argv, t_data *data);
