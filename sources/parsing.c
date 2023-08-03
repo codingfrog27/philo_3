@@ -17,13 +17,22 @@ static int	philatoi(char *str);
 bool		philo_init(t_data	*data);
 static bool	init_all_mutex(t_data *data);
 
-// move all mutex locking to own function?
-bool	data_init(int argc, char **argv, t_data *data)
+//pthread create not protected atm
+bool	data_init(int ac, char **av, t_data *data)
 {
-	if (!parsing || !philo_init(data) || !init_all_mutex(data))
+	int	i;
+
+	i = 0;
+	if (!parsing(data, av, ac) || !philo_init(data) || !init_all_mutex(data))
 		return (false);
-	data->all_alive = true;
+	while (i < data->nbr_of_philos)
+	{
+		pthread_create(data->thread_ids[i], NULL, philo_routine, \
+		(void *)data->philo_arr[i]);
+		i++;
+	}
 	// start all threads (lock untill theyre all started) + start_time
+	return (true);
 }
 
 //so sad C doesn't allow you to while loop through struct members
@@ -36,9 +45,9 @@ static bool	parsing(t_data *data, char **argv, int argc)
 	data->time_till_death = philatoi(argv[i++]);
 	data->time_to_eat = philatoi(argv[i++]);
 	data->sleep_time = philatoi(argv[i++]);
+	data->all_alive = true;
 	data->full_philos = 0;
-	// data->finish_when_full = false;
-	data->meals_needed = -1; //either remember this or add eat till full bool
+	data->meals_needed = -1;
 	if (argc == 6)
 		data->meals_needed = philatoi(argv[i]);
 	if (data->nbr_of_philos == 0 || data->time_till_death == 0 || \
@@ -50,20 +59,23 @@ static bool	parsing(t_data *data, char **argv, int argc)
 bool	philo_init(t_data	*data)
 {
 	int				i;
-	t_philo			*philos;
+	t_philo			**philos;
 
 	i = 0;
 	data->thread_ids = malloc(sizeof(pthread_t *) * data->nbr_of_philos);
-	philos = malloc(sizeof(t_philo) * (data->nbr_of_philos));
+	philos = malloc(sizeof(t_philo *) * (data->nbr_of_philos));
 	if (!philos || !data->thread_ids)
 		return (false);
 	while (i < data->nbr_of_philos)
 	{
-		philos[i].id = i + 1;
-		philos[i].meals_eaten = 0;
-		philos[i].full = false;
-		philos[i].last_mealtime = 0;
-		philos[i].data = data;
+		philos[i] = malloc(sizeof(t_philo));
+		if (!philos[i])
+			return (false);
+		philos[i]->id = i + 1;
+		philos[i]->meals_eaten = 0;
+		philos[i]->full = false;
+		philos[i]->last_mealtime = 0;
+		philos[i]->data = data;
 		i++;
 	}
 	data->philo_arr = philos;
@@ -99,15 +111,21 @@ static bool	init_all_mutex(t_data *data)
 	int		i;
 
 	i = 0;
-	pthread_mutex_init(data->print_lock, NULL);
-	pthread_mutex_init(data->meal_lock, NULL);
-	pthread_mutex_init(data->death_lock, NULL);
+	data->print_lock = malloc(sizeof(pthread_mutex_t));
+	data->death_lock = malloc(sizeof(pthread_mutex_t));
 	data->forks = malloc(sizeof(pthread_mutex_t *) * (data->nbr_of_philos - 1));
-	if (!data->forks)
+	if (!data->print_lock || !data->death_lock || !data->forks)
 		return (false);
+	pthread_mutex_init(data->print_lock, NULL);
+	pthread_mutex_init(data->death_lock, NULL);
 	while (i < data->nbr_of_philos)
 	{
+		data->forks[i] = malloc(sizeof(pthread_mutex_t));
+		data->philo_arr[i]->meal_lock = malloc(sizeof(pthread_mutex_t));
+		if (!data->forks[i] || !data->philo_arr[i]->meal_lock)
+			return (false);
 		pthread_mutex_init(data->forks[i], NULL);
+		pthread_mutex_init(data->philo_arr[i]->meal_lock, NULL);
 		i++;
 	}
 	return (true);
