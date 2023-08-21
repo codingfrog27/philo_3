@@ -21,7 +21,7 @@
 
 static bool	print_args(t_data *data);
 
-// no differentiation between malloc and bad input parse fail, np i think
+// no differentiation between malloc and bad input parse fail, but thats ok
 int	main(int argc, char **argv)
 {
 	t_data		data;
@@ -40,7 +40,7 @@ int	main(int argc, char **argv)
 // 	i = 0;
 // 	while (i < data->nbr_of_philos)
 // 	{
-// 		if (pthread_create(data->thread_ids[i], NULL, philo_routine, \
+// 		if (pthread_create(data->thread_id[i], NULL, philo_routine, \
 // 		(void *)&data->philo_arr[i]) != 0)
 // 			return (join_threads_and_end(data, i));
 // 		i++;

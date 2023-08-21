@@ -22,10 +22,10 @@ LINKFLAGS 		?= -I include
 
 SOURCEFILES	:=	main.c \
 				parsing.c \
-				# time.c \
-				utils.c \
-				init.c \
 				philo.c \
+				time.c \
+				#utils.c \
+				init.c \
 
 OFILES	:=	$(SOURCEFILES:.c=.o)
 SRC_DIR	:=	./sources/

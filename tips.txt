@@ -30,3 +30,6 @@ locking that mutex
 
 
 -left off at
+
+
+21-08 went back after nother break, is confusing, at starting simulation now
