@@ -29,7 +29,7 @@ long	time_since_x(long x)
 	if (!start_time)
 	{
 		start_time = whattimeisitrightnow();
-		printf("START TIME == %li", start_time);
+		printf("START TIME == %li\n", start_time);
 	}
 	return (whattimeisitrightnow() - start_time - x);
 }

@@ -14,7 +14,7 @@
 
 NAME 			:= philo
 CC				= gcc
-COMPIL_FLAGS	?= -Wall -Wextra -Werror
+COMPIL_FLAGS	?= -Wall -Wextra #-Werror
 DEBUG_FLAGS		?=
 #-fsanitize=thread
 LINKFLAGS 		?= -I include
@@ -66,7 +66,7 @@ re: fclean all
 #-----------------easy testing---------------
 
 test: $(NAME) $(OBJS) $(SRCS)
-	@./philo 5 5000000 200 2000 20
+	@./philo 5 5000000 200 2000 5
 
 #ARGS ARE <NB OF PHILOS> 2 <DIE TIME> 3 <EAT TIME> 4<SLEEL TIME> 5<MAX MEALS>
 

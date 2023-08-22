@@ -27,15 +27,20 @@ bool	data_init(int ac, char **av, t_data *data)
 		return (false);
 	while (i < data->nbr_of_philos)
 	{
-		pthread_mutex_lock(data->philo_arr[i]->meal_lock);
+		// pthread_mutex_lock(data->philo_arr[i]->meal_lock);
 		pthread_create(data->philo_arr[i]->thread_id, NULL, philo_routine, \
 		(void *)data->philo_arr[i]); //protection?
 		i++;
 	}
+	i--;
 	while (i > 0)
 	{
 		pthread_mutex_unlock(data->philo_arr[i]->meal_lock);
 		i--;
+	}
+	while(1)
+	{
+		sleep(10);
 	}
 	return (true);
 }
@@ -121,18 +126,17 @@ static bool	init_all_mutex(t_data *data)
 
 	data->death_lock = malloc(sizeof(pthread_mutex_t));
 	data->forks = malloc(sizeof(pthread_mutex_t *) * (data->nbr_of_philos - 1));
+	data->print_lock = malloc(sizeof(pthread_mutex_t));
 	if (!data->death_lock || !data->forks)
 		return (false);
+	pthread_mutex_init(data->print_lock, NULL);
 	pthread_mutex_init(data->death_lock, NULL);
 	while (i < data->nbr_of_philos)
 	{
 		data->forks[i] = malloc(sizeof(pthread_mutex_t));
-		data->philo_arr[i]->print_lock = malloc(sizeof(pthread_mutex_t));
 		data->philo_arr[i]->meal_lock = malloc(sizeof(pthread_mutex_t));
-		if (!data->forks[i] || !data->philo_arr[i]->meal_lock || \
-			!data->philo_arr[i]->print_lock)
+		if (!data->forks[i] || !data->philo_arr[i]->meal_lock)
 			return (false);
-		pthread_mutex_init(data->philo_arr[i]->print_lock, NULL);
 		pthread_mutex_init(data->forks[i], NULL);
 		pthread_mutex_init(data->philo_arr[i]->meal_lock, NULL);
 		data->philo_arr[i]->left_fork = data->forks[i];

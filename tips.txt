@@ -33,3 +33,15 @@ locking that mutex
 
 
 21-08 went back after nother break, is confusing, at starting simulation now
+
+
+
+
+print lock should be one singular shared cause its to stop printing getting
+mixed up
+
+quintescential== meal lock (per philo), 1 per for, 1print lock
+
+
+use pthread join instead of sleep (or detach(if i do use detach wait
+sleep arg time))

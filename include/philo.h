@@ -38,7 +38,6 @@ typedef struct s_philo
 
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*meal_lock;
-	pthread_mutex_t	*print_lock;
 	pthread_t		*thread_id;
 	t_data			*data;
 }				t_philo;
@@ -63,6 +62,7 @@ struct s_data
 	long			start_time;
 	bool			all_alive;
 	pthread_mutex_t	*death_lock;
+	pthread_mutex_t	*print_lock;
 	pthread_mutex_t	**forks;
 	t_philo			**philo_arr;
 };
