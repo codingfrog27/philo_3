@@ -24,6 +24,7 @@ SOURCEFILES	:=	main.c \
 				parsing.c \
 				philo.c \
 				time.c \
+				monitor.c \
 				#utils.c \
 				init.c \
 

@@ -27,21 +27,19 @@ bool	data_init(int ac, char **av, t_data *data)
 		return (false);
 	while (i < data->nbr_of_philos)
 	{
-		// pthread_mutex_lock(data->philo_arr[i]->meal_lock);
+		pthread_mutex_lock(data->philo_arr[i]->meal_lock);
 		pthread_create(data->philo_arr[i]->thread_id, NULL, philo_routine, \
 		(void *)data->philo_arr[i]); //protection?
 		i++;
 	}
 	i--;
-	while (i > 0)
+	while (i >= 0)
 	{
 		pthread_mutex_unlock(data->philo_arr[i]->meal_lock);
 		i--;
 	}
-	while(1)
-	{
-		sleep(10);
-	}
+	printf("hello?");
+	monitor_philos(data);
 	return (true);
 }
 
@@ -55,7 +53,7 @@ static bool	parsing(t_data *data, char **argv, int argc)
 	data->time_till_death = philatoi(argv[i++]);
 	data->time_to_eat = philatoi(argv[i++]);
 	data->sleep_time = philatoi(argv[i++]);
-	data->all_alive = true;
+	data->end_simulation = false;
 	data->full_philos = 0;
 	data->meals_needed = -1;
 	if (argc == 6)
@@ -123,7 +121,6 @@ static bool	init_all_mutex(t_data *data)
 	int		i;
 
 	i = 0;
-
 	data->death_lock = malloc(sizeof(pthread_mutex_t));
 	data->forks = malloc(sizeof(pthread_mutex_t *) * (data->nbr_of_philos - 1));
 	data->print_lock = malloc(sizeof(pthread_mutex_t));

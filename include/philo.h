@@ -60,7 +60,7 @@ struct s_data
 	int				meals_needed;
 	int				full_philos;
 	long			start_time;
-	bool			all_alive;
+	bool			end_simulation;
 	pthread_mutex_t	*death_lock;
 	pthread_mutex_t	*print_lock;
 	pthread_mutex_t	**forks;
@@ -72,6 +72,7 @@ bool	philo_init(t_data	*data);
 bool	setting_the_table(t_data *data);
 bool	starting_threads(t_data *data);
 void	*philo_routine(void *para);
+void	monitor_philos(t_data *data);
 
 //time
 long	time_since_x(long start);
