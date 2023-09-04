@@ -12,14 +12,18 @@
 
 #include "philo.h"
 
-bool	all_alive_and_hungry(t_philo *philo);
+bool		all_alive_and_hungry(t_philo *philo);
+static bool	mealtime(t_philo *philo);
 
+//print lock never gets unlocked on fail, partially on purpose but will also
+// cause deadlock if I dont use detach
+// TODO ->UNLOCK PRINT LOCK AND MOVE DEATH CHECK TO MONITOR THREAD
 bool	philo_print(t_philo *philo, t_msg_types msg_type)
 {
-	const char	*msgs[] = {"actually died", "is pondering their orb", \
-						"is munching", "is catching Z's"};
-	const char	*colours[] = {C_DBLUE, C_LBLUE, C_GREEN, C_YELLOW, C_ORANGE, \
-								C_RED};
+	static const char	*msgs[] = {"actually died", "is pondering their orb", \
+						"has taken a fork", "is munching", "is catching Z's"};
+	static const char	*colours[] = {C_DBLUE, C_LBLUE, C_GREEN, C_YELLOW, \
+									C_ORANGE, C_RED};
 
 	if (!all_alive_and_hungry(philo))
 		return (false);
@@ -61,8 +65,21 @@ void	*philo_routine(void *para)
 		coolsleep(100);
 	while (1)
 	{
-		if (!philo_print(philo, thinking))
+		if (!philo_print(philo, thinking) || !mealtime(philo))
 			return (NULL);
 	}
 	return (NULL);
+}
+
+// never returns false but needs to be void anyways
+static bool	mealtime(t_philo *philo)
+{
+	pthread_mutex_lock(philo->left_fork);
+	philo_print(philo, grabbing_fork);
+	pthread_mutex_lock(philo->right_fork);
+	philo_print(philo, grabbing_fork);
+	pthread_mutex_unlock(philo->left_fork);
+	pthread_mutex_unlock(philo->right_fork);
+	philo_print(philo, eating);
+	return (true);
 }

@@ -37,6 +37,7 @@ typedef struct s_philo
 	long			last_mealtime;
 
 	pthread_mutex_t	*left_fork;
+	pthread_mutex_t	*right_fork;
 	pthread_mutex_t	*meal_lock;
 	pthread_t		*thread_id;
 	t_data			*data;
@@ -46,6 +47,7 @@ typedef enum e_msg_types
 {
 	death,
 	thinking,
+	grabbing_fork,
 	eating,
 	sleeping,
 }	t_msg_types;

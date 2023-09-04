@@ -16,6 +16,7 @@ static bool	parsing(t_data *data, char **argv, int argc);
 static int	philatoi(char *str);
 bool		philo_init(t_data	*data);
 static bool	init_all_mutex(t_data *data);
+static void	assign_left_forks(t_data *data);
 
 //pthread create not protected atm
 bool	data_init(int ac, char **av, t_data *data)
@@ -29,7 +30,7 @@ bool	data_init(int ac, char **av, t_data *data)
 	{
 		pthread_mutex_lock(data->philo_arr[i]->meal_lock);
 		pthread_create(data->philo_arr[i]->thread_id, NULL, philo_routine, \
-		(void *)data->philo_arr[i]); //protection?
+		(void *)data->philo_arr[i]);
 		i++;
 	}
 	i--;
@@ -139,5 +140,21 @@ static bool	init_all_mutex(t_data *data)
 		data->philo_arr[i]->left_fork = data->forks[i];
 		i++;
 	}
+	assign_left_forks(data);
 	return (true);
+}
+
+static void	assign_left_forks(t_data *data)
+{
+	int		i;
+	t_philo	**philos;
+
+	i = 0;
+	philos = data->philo_arr;
+	while (i < data->nbr_of_philos - 1)
+	{
+		philos[i]->right_fork = philos[i + 1]->left_fork;
+		i++;
+	}
+	philos[i]->right_fork = philos[0]->left_fork;
 }
