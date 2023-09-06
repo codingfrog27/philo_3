@@ -67,19 +67,20 @@ re: fclean all
 #-----------------easy testing---------------
 
 test: $(NAME) $(OBJS) $(SRCS)
-	@./philo 5 5000000 200 2000 5
+	@./philo 2000 400 200 200 50
 
+#//4 410 200 200
 #ARGS ARE <NB OF PHILOS> 2 <DIE TIME> 3 <EAT TIME> 4<SLEEL TIME> 5<MAX MEALS>
 
 
 
 #colours---------------
 
-C_RED		= \x1b[38;2;255;0;0m
+C_RED		= \033[31m
 C_LRED		= \x1b[38;2;255;128;128m
 C_DRED		= \x1b[38;2;128;0;0m
-C_LORANGE	= \x1b[38;2;255;192;128m
-C_ORANGE	= \x1b[38;2;255;128;0m
+C_LORANGE	= \033[38;5;208m
+C_ORANGE	= \033[38;5;208m
 C_DORANGE	= \x1b[38;2;128;64;0m
 C_LYELLOW	= \x1b[38;2;255;255;128m
 C_YELLOW	= \x1b[38;2;255;255;0m
@@ -88,9 +89,9 @@ C_LCHRT		= \x1b[38;2;192;255;128m
 C_CHRT		= \x1b[38;2;128;255;0m
 C_DCHRT		= \x1b[38;2;64;128;0m
 C_LGREEN	= \x1b[38;2;128;255;128m
-C_GREEN		= \x1b[38;2;0;255;0m
-C_LCYAN		= \x1b[38;2;128;255;255m
-C_CYAN		= \x1b[38;2;0;255;255m
+C_GREEN		= \033[32m
+C_LCYAN		= \033[38;5;87m
+C_CYAN		= \033[38;5;87m
 C_DCYAN		= \x1b[38;2;0;128;128m
 C_LAZURE	= \x1b[38;2;0;192;255m
 C_AZURE		= \x1b[38;2;0;128;255m
@@ -102,5 +103,5 @@ C_LVIOLET	= \x1b[38;2;192;0;255m
 C_VIOLET	= \x1b[38;2;128;0;255m
 C_DVIOLET	= \x1b[38;2;64;0;255m
 
-C_RESET	= \x1b[0m
-C_BOLD	= \x1b[1m
+C_RESET	= $(shell tput sgr0)
+C_BOLD	=$(shell tput bold)

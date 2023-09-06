@@ -40,7 +40,7 @@ int	main(int argc, char **argv)
 // 	i = 0;
 // 	while (i < data->nbr_of_philos)
 // 	{
-// 		if (pthread_create(data->thread_id[i], NULL, philo_routine, \
+// 		if (pthread_create(data->thread_id[i], NULL, philo_routine,
 // 		(void *)&data->philo_arr[i]) != 0)
 // 			return (join_threads_and_end(data, i));
 // 		i++;

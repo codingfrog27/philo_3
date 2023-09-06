@@ -26,6 +26,7 @@ bool	data_init(int ac, char **av, t_data *data)
 	i = 0;
 	if (!parsing(data, av, ac) || !philo_init(data) || !init_all_mutex(data))
 		return (false);
+	printf("here?\n");
 	while (i < data->nbr_of_philos)
 	{
 		pthread_mutex_lock(data->philo_arr[i]->meal_lock);
@@ -34,12 +35,12 @@ bool	data_init(int ac, char **av, t_data *data)
 		i++;
 	}
 	i--;
+	data->start_time = whattimeisitrightnow();
 	while (i >= 0)
 	{
 		pthread_mutex_unlock(data->philo_arr[i]->meal_lock);
 		i--;
 	}
-	printf("hello?");
 	monitor_philos(data);
 	return (true);
 }
