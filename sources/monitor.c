@@ -22,10 +22,6 @@ void	monitor_philos(t_data *data)
 	int	i;
 
 	i = 0;
-	while(1)
-	{
-		sleep(50);
-	}
 	while (i < data->nbr_of_philos)
 	{
 		pthread_mutex_lock(data->philo_arr[i]->meal_lock);

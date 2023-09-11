@@ -13,7 +13,9 @@
 #include "philo.h"
 
 bool		all_alive_and_hungry(t_philo *philo);
-static bool	mealtime(t_philo *philo);
+static void	mealtime(t_philo *philo);
+static void	sleeptime(t_philo *philo);
+
 
 //print lock never gets unlocked on fail, partially on purpose but will also
 // cause deadlock if I dont use detach
@@ -65,14 +67,16 @@ void	*philo_routine(void *para)
 		coolsleep(100);
 	while (1)
 	{
-		if (!philo_print(philo, thinking) || !mealtime(philo))
+		if (!philo_print(philo, thinking))
 			return (NULL);
+		mealtime(philo);
+		sleeptime(philo);
 	}
 	return (NULL);
 }
 
 // never returns false but needs to be void anyways
-static bool	mealtime(t_philo *philo)
+static void	mealtime(t_philo *philo)
 {
 	pthread_mutex_lock(philo->left_fork);
 	philo_print(philo, grabbing_fork);
@@ -82,4 +86,10 @@ static bool	mealtime(t_philo *philo)
 	pthread_mutex_unlock(philo->right_fork);
 	philo_print(philo, eating);
 	return (true);
+}
+
+static void	sleeptime(t_philo *philo)
+{
+	philo_print(philo, sleeping);
+	coolsleep(philo->data->sleep_time);
 }
