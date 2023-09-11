@@ -20,6 +20,7 @@ bool	everyone_full(t_data *data);
 
 void	monitor_philos(t_data *data)
 {
+	//test
 	int	i;
 
 	i = 0;
