@@ -67,7 +67,7 @@ re: fclean all
 #-----------------easy testing---------------
 
 test: $(NAME) $(OBJS) $(SRCS)
-	@./philo 2000 400 200 200 50
+	@./philo 4 410 200 200 50
 
 #//4 410 200 200
 #ARGS ARE <NB OF PHILOS> 2 <DIE TIME> 3 <EAT TIME> 4<SLEEL TIME> 5<MAX MEALS>

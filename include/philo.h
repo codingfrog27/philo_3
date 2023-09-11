@@ -56,12 +56,12 @@ typedef enum e_msg_types
 //also using mealcheck to see if philo is alive + as start lock?
 struct s_data
 {
-	int				nbr_of_philos;
-	int				time_till_death;
-	int				time_to_eat;
-	int				sleep_time;
-	int				meals_needed;
-	int				full_philos;
+	long			nbr_of_philos;
+	long			time_till_death;
+	long			time_to_eat;
+	long			sleep_time;
+	long			meals_needed;
+	long			full_philos;
 	long			start_time;
 	bool			end_simulation;
 	pthread_mutex_t	*death_lock;

@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "philo.h"
+#include <fcntl.h>
 
 //could I just detach at creation and not need this function? is there merit
 // to doing it this way?
@@ -22,6 +23,7 @@ void	monitor_philos(t_data *data)
 	int	i;
 
 	i = 0;
+	int fd = open("test.txt", O_RDWR);
 	while (1)
 	{
 		while (i < data->nbr_of_philos)
@@ -30,6 +32,9 @@ void	monitor_philos(t_data *data)
 			if (time_since_x(data->philo_arr[i]->last_mealtime) \
 				> data->time_till_death)
 			{
+				dprintf(fd, "philo %i last mealtime was %li but deathtime is %li"\
+				, data->philo_arr[i]->id, data->philo_arr[i]->last_mealtime, \
+				data->time_till_death);
 				philo_print(data->philo_arr[i], death);
 				pthread_mutex_lock(data->death_lock);
 				data->end_simulation = true;
@@ -58,6 +63,8 @@ void	cleanup_threads_and_end(t_data *data)
 		pthread_join(*data->philo_arr[i]->thread_id, NULL);
 		i++;
 	}
+	if (everyone_full(data))
+		printf("EVERYONE FULL YIPPIE\n");
 }
 
 bool	everyone_full(t_data *data)

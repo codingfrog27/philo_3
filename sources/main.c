@@ -19,7 +19,7 @@
 
 #include "philo.h"
 
-static bool	print_args(t_data *data);
+// static bool	print_args(t_data *data);
 
 // no differentiation between malloc and bad input parse fail, but thats ok
 int	main(int argc, char **argv)
@@ -28,8 +28,8 @@ int	main(int argc, char **argv)
 
 	if (argc < 5 || argc > 6 || !data_init(argc, argv, &data))
 		return (printf(C_RED PARSE_ERROR));
-	if (!print_args(&data))
-		return (printf(C_RED MALLOC_ERROR));
+	// if (!print_args(&data))
+	// 	return (printf(C_RED MALLOC_ERROR));
 	return (0);
 }
 
@@ -49,10 +49,10 @@ int	main(int argc, char **argv)
 // 	return (monitor_in_parent_thread(data));
 // }
 
-static bool	print_args(t_data *data)
-{
-	printf("deathtime = %i\n there are %i philos\n %i %i %i\n", \
-	data->time_till_death, data->nbr_of_philos, \
-	data->time_to_eat, data->sleep_time, data->meals_needed);
-	return (true);
-}
+// static bool	print_args(t_data *data)
+// {
+// 	printf("deathtime = %li\n there are %li philos\n %li %li %li\n", \
+// 	data->time_till_death, data->nbr_of_philos, \
+// 	data->time_to_eat, data->sleep_time, data->meals_needed);
+// 	return (true);
+// }

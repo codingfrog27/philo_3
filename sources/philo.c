@@ -22,19 +22,26 @@ void		update_last_mealtime(t_philo *philo);
 // TODO ->UNLOCK PRINT LOCK AND MOVE DEATH CHECK TO MONITOR THREAD
 bool	philo_print(t_philo *philo, t_msg_types msg_type)
 {
-	static const char	*msgs[] = {"actually died", "is pondering their orb", \
-						"has taken a fork", "is munching", "is catching Z's"};
+	// static const char	*msgs[] = {C_PINK"died", C_LCYAN"is thinking", \
+	// 					C_LVIOLET"has taken a fork", C_CHRT"is eating", \
+	// 					C_SPRGR"is sleeping"};
+	static const char	*msgs[] = {"died", "is thinking", \
+						"has taken a fork", "is eating", \
+						"is sleeping"};
 	static const char	*colours[] = {C_DBLUE, C_LBLUE, C_GREEN, C_YELLOW, \
 									C_ORANGE, C_RED};
 
 	if (!all_alive_and_hungry(philo))
 		return (false);
 	pthread_mutex_lock(philo->data->print_lock);
-	printf("%s%li Philo %i %s\n"C_RESET, colours[philo->id % 5], \
-	time_since_x(0), philo->id, msgs[msg_type]);
+	// printf("%li %sPhilo %i %s\n"C_RESET, time_since_x(0), \
+	// colours[philo->id % 6], philo->id, msgs[msg_type]);
+	printf("%li %i %s\n", time_since_x(0), philo->id, msgs[msg_type]);
 	pthread_mutex_unlock(philo->data->print_lock);
 	return (true);
 }
+// activity_colours[msg_type]
+
 //old philo check
 	// if (time_since_x(philo->last_mealtime) > philo->data->time_till_death)
 	// {
@@ -103,10 +110,4 @@ void	update_last_mealtime(t_philo *philo)
 	philo->last_mealtime = time_since_x(0);
 	philo->meals_eaten++;
 	pthread_mutex_unlock(philo->meal_lock);
-}
-
-static void	sleeptime(t_philo *philo)
-{
-	philo_print(philo, sleeping);
-	coolsleep(philo->data->sleep_time);
 }

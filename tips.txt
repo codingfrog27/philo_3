@@ -1,3 +1,18 @@
+11=19=2023
+
+-Note if I want Orlandos slower but slightly safer method at the %2 mini sleep at the start
+	I switch left and right for so that there's 0 possibility for any deadlock
+
+
+-fix proper monitoring locking when death has been discovered
+-clean functions and init and parsing
+-double check time
+
+
+
+
+
+
 06-09-2023
 
 working sofar, time can be done cleaner
