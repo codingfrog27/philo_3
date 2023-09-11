@@ -1,3 +1,80 @@
+06-09-2023
+
+working sofar, time can be done cleaner
+Also could give printing different colours depending on the enum given so
+we will have different colours for both philos and actions
+
+
+
+
+TODO
+
+-seperate parsing and init
+-better logic/structure for time functions (optional but nice?)
+-philos currently dont die even if they should, I can starting testing by
+dprintfing the mealtimes in monitoring to a seperate file :)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 1 thread for printing
 
 2 can init philos be a bzero type of function?

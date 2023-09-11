@@ -22,25 +22,30 @@ void	monitor_philos(t_data *data)
 	int	i;
 
 	i = 0;
-	while (i < data->nbr_of_philos)
+	while (1)
 	{
-		pthread_mutex_lock(data->philo_arr[i]->meal_lock);
-		if (data->philo_arr[i]->last_mealtime > data->time_till_death)
+		while (i < data->nbr_of_philos)
 		{
-			pthread_mutex_lock(data->death_lock);
-			data->end_simulation = true;
-			pthread_mutex_unlock(data->death_lock);
+			pthread_mutex_lock(data->philo_arr[i]->meal_lock);
+			if (time_since_x(data->philo_arr[i]->last_mealtime) \
+				> data->time_till_death)
+			{
+				philo_print(data->philo_arr[i], death);
+				pthread_mutex_lock(data->death_lock);
+				data->end_simulation = true;
+				pthread_mutex_unlock(data->death_lock);
+				pthread_mutex_unlock(data->philo_arr[i]->meal_lock);
+				return (cleanup_threads_and_end(data));
+			}
+			if (data->philo_arr[i]->meals_eaten >= data->meals_needed)
+				data->philo_arr[i]->full = true;
 			pthread_mutex_unlock(data->philo_arr[i]->meal_lock);
-			return (cleanup_threads_and_end(data));
+			i++;
 		}
-		if (data->philo_arr[i]->meals_eaten >= data->meals_needed)
-			data->philo_arr[i]->full = true;
-		pthread_mutex_unlock(data->philo_arr[i]->meal_lock);
-		i++;
+		if (everyone_full(data))
+			return (cleanup_threads_and_end(data));
+		i = 0;
 	}
-	i = 0;
-	if (everyone_full(data))
-		return (cleanup_threads_and_end(data));
 }
 
 void	cleanup_threads_and_end(t_data *data)

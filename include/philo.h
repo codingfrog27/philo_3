@@ -35,6 +35,7 @@ typedef struct s_philo
 	int				meals_eaten;
 	bool			full;
 	long			last_mealtime;
+	long			start_time;
 
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
@@ -75,6 +76,7 @@ bool	setting_the_table(t_data *data);
 bool	starting_threads(t_data *data);
 void	*philo_routine(void *para);
 void	monitor_philos(t_data *data);
+bool	philo_print(t_philo *philo, t_msg_types msg_type);
 
 //time
 long	time_since_x(long start);

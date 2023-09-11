@@ -15,7 +15,7 @@
 bool		all_alive_and_hungry(t_philo *philo);
 static void	mealtime(t_philo *philo);
 static void	sleeptime(t_philo *philo);
-
+void		update_last_mealtime(t_philo *philo);
 
 //print lock never gets unlocked on fail, partially on purpose but will also
 // cause deadlock if I dont use detach
@@ -30,19 +30,20 @@ bool	philo_print(t_philo *philo, t_msg_types msg_type)
 	if (!all_alive_and_hungry(philo))
 		return (false);
 	pthread_mutex_lock(philo->data->print_lock);
-	if (time_since_x(philo->last_mealtime) > philo->data->time_till_death)
-	{
-		printf("Philo %i %s\n", philo->id, msgs[0]);
-		pthread_mutex_lock(philo->data->death_lock);
-		philo->data->end_simulation = true;
-		pthread_mutex_unlock(philo->data->death_lock);
-		return (false);
-	}
-	printf("%sPhilo %i %s\n"C_RESET, colours[philo->id % 10], \
-			philo->id, msgs[msg_type]);
+	printf("%s%li Philo %i %s\n"C_RESET, colours[philo->id % 5], \
+	time_since_x(0), philo->id, msgs[msg_type]);
 	pthread_mutex_unlock(philo->data->print_lock);
 	return (true);
 }
+//old philo check
+	// if (time_since_x(philo->last_mealtime) > philo->data->time_till_death)
+	// {
+	// 	printf("Philo %i %s\n", philo->id, msgs[0]);
+	// 	pthread_mutex_lock(philo->data->death_lock);
+	// 	philo->data->end_simulation = true;
+	// 	pthread_mutex_unlock(philo->data->death_lock);
+	// 	return (false);
+	// }
 
 bool	all_alive_and_hungry(t_philo *philo)
 {
@@ -82,10 +83,26 @@ static void	mealtime(t_philo *philo)
 	philo_print(philo, grabbing_fork);
 	pthread_mutex_lock(philo->right_fork);
 	philo_print(philo, grabbing_fork);
+	update_last_mealtime(philo);
+	philo_print(philo, eating);
+	coolsleep(philo->data->time_to_eat);
 	pthread_mutex_unlock(philo->left_fork);
 	pthread_mutex_unlock(philo->right_fork);
-	philo_print(philo, eating);
-	return (true);
+	//update_last_mealtime(philo);
+}
+
+static void	sleeptime(t_philo *philo)
+{
+	philo_print(philo, sleeping);
+	coolsleep(philo->data->sleep_time);
+}
+
+void	update_last_mealtime(t_philo *philo)
+{
+	pthread_mutex_lock(philo->meal_lock);
+	philo->last_mealtime = time_since_x(0);
+	philo->meals_eaten++;
+	pthread_mutex_unlock(philo->meal_lock);
 }
 
 static void	sleeptime(t_philo *philo)
