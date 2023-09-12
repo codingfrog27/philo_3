@@ -12,11 +12,11 @@
 
 #include "philo.h"
 
-static bool	parsing(t_data *data, char **argv, int argc);
-static int	philatoi(char *str);
-bool		philo_init(t_data	*data);
-static bool	init_all_mutex(t_data *data);
-static void	assign_left_forks(t_data *data);
+bool	parsing(t_data *data, char **argv, int argc);
+int		philatoi(char *str);
+bool	philo_init(t_data	*data);
+bool	init_all_mutex(t_data *data);
+void	assign_left_forks(t_data *data);
 
 //pthread create not protected atm
 bool	data_init(int ac, char **av, t_data *data)
@@ -26,7 +26,6 @@ bool	data_init(int ac, char **av, t_data *data)
 	i = 0;
 	if (!parsing(data, av, ac) || !philo_init(data) || !init_all_mutex(data))
 		return (false);
-	printf("here?\n");
 	while (i < data->nbr_of_philos)
 	{
 		pthread_mutex_lock(data->philo_arr[i]->meal_lock);
@@ -35,7 +34,7 @@ bool	data_init(int ac, char **av, t_data *data)
 		i++;
 	}
 	i--;
-	data->start_time = whattimeisitrightnow();
+	// data->start_time = timestamp();
 	while (i >= 0)
 	{
 		pthread_mutex_unlock(data->philo_arr[i]->meal_lock);
@@ -46,7 +45,7 @@ bool	data_init(int ac, char **av, t_data *data)
 }
 
 //so sad C doesn't allow you to while loop through struct members
-static bool	parsing(t_data *data, char **argv, int argc)
+bool	parsing(t_data *data, char **argv, int argc)
 {
 	int	i;
 
@@ -101,7 +100,7 @@ bool	philo_init(t_data	*data)
  * @param str
  * @return converted int
  */
-static int	philatoi(char *str)
+int	philatoi(char *str)
 {
 	long	ret;
 	int		i;
@@ -118,7 +117,7 @@ static int	philatoi(char *str)
 	return ((int)ret);
 }
 
-static bool	init_all_mutex(t_data *data)
+bool	init_all_mutex(t_data *data)
 {
 	int		i;
 
@@ -145,7 +144,7 @@ static bool	init_all_mutex(t_data *data)
 	return (true);
 }
 
-static void	assign_left_forks(t_data *data)
+void	assign_left_forks(t_data *data)
 {
 	int		i;
 	t_philo	**philos;

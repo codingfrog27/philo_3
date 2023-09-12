@@ -1,1 +1,1 @@
-philo 4 last mealtime was 0 but deathtime is 410750
+philo 3 last mealtime was 1694534305690 but deathtime is 410

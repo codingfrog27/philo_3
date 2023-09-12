@@ -2,6 +2,7 @@
 	"files.associations": {
 		"_pthread_types.h": "c",
 		"h_colors.h": "c",
-		"philo.h": "c"
+		"philo.h": "c",
+		"time.h": "c"
 	}
 }

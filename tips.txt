@@ -1,3 +1,10 @@
+12-09-2023
+
+-Fix mealtime updating, approaches are in notebook
+-when philo is found dead in monitoring, make custom death print
+
+
+
 11=19=2023
 
 -Note if I want Orlandos slower but slightly safer method at the %2 mini sleep at the start

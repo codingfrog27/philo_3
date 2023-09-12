@@ -22,12 +22,12 @@ void		update_last_mealtime(t_philo *philo);
 // TODO ->UNLOCK PRINT LOCK AND MOVE DEATH CHECK TO MONITOR THREAD
 bool	philo_print(t_philo *philo, t_msg_types msg_type)
 {
-	// static const char	*msgs[] = {C_PINK"died", C_LCYAN"is thinking", \
-	// 					C_LVIOLET"has taken a fork", C_CHRT"is eating", \
-	// 					C_SPRGR"is sleeping"};
-	static const char	*msgs[] = {"died", "is thinking", \
-						"has taken a fork", "is eating", \
-						"is sleeping"};
+	static const char	*msgs[] = {C_PINK"died", C_LCYAN"is thinking", \
+						C_LVIOLET"has taken a fork", C_CHRT"is eating", \
+						C_SPRGR"is sleeping"};
+	// static const char	*msgs[] = {"died", "is thinking", \
+	// 					"has taken a fork", "is eating", \
+	// 					"is sleeping"};
 	static const char	*colours[] = {C_DBLUE, C_LBLUE, C_GREEN, C_YELLOW, \
 									C_ORANGE, C_RED};
 
@@ -36,21 +36,11 @@ bool	philo_print(t_philo *philo, t_msg_types msg_type)
 	pthread_mutex_lock(philo->data->print_lock);
 	// printf("%li %sPhilo %i %s\n"C_RESET, time_since_x(0), \
 	// colours[philo->id % 6], philo->id, msgs[msg_type]);
-	printf("%li %i %s\n", time_since_x(0), philo->id, msgs[msg_type]);
+	// printf("%li %i %s\n", time_since_x(0), philo->id, msgs[msg_type]);
 	pthread_mutex_unlock(philo->data->print_lock);
 	return (true);
 }
-// activity_colours[msg_type]
 
-//old philo check
-	// if (time_since_x(philo->last_mealtime) > philo->data->time_till_death)
-	// {
-	// 	printf("Philo %i %s\n", philo->id, msgs[0]);
-	// 	pthread_mutex_lock(philo->data->death_lock);
-	// 	philo->data->end_simulation = true;
-	// 	pthread_mutex_unlock(philo->data->death_lock);
-	// 	return (false);
-	// }
 
 bool	all_alive_and_hungry(t_philo *philo)
 {
@@ -107,7 +97,8 @@ static void	sleeptime(t_philo *philo)
 void	update_last_mealtime(t_philo *philo)
 {
 	pthread_mutex_lock(philo->meal_lock);
-	philo->last_mealtime = time_since_x(0);
+	philo->last_mealtime = timestamp();
+	printf("%i LAST MEALTIME = %li\n", philo->id, philo->last_mealtime);
 	philo->meals_eaten++;
 	pthread_mutex_unlock(philo->meal_lock);
 }

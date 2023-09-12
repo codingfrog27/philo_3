@@ -80,6 +80,7 @@ bool	philo_print(t_philo *philo, t_msg_types msg_type);
 
 //time
 long	time_since_x(long start);
-long	whattimeisitrightnow(void);
+long	time_since_start(void);
+long	timestamp(void);
 bool	coolsleep(useconds_t sleep_time);
 #endif // !PHILO_H

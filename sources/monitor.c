@@ -24,7 +24,7 @@ void	monitor_philos(t_data *data)
 	int	i;
 
 	i = 0;
-	int fd = open("test.txt", O_RDWR);
+	// int fd = open("test.txt", O_RDWR);
 	while (1)
 	{
 		while (i < data->nbr_of_philos)
@@ -33,10 +33,12 @@ void	monitor_philos(t_data *data)
 			if (time_since_x(data->philo_arr[i]->last_mealtime) \
 				> data->time_till_death)
 			{
-				dprintf(fd, "philo %i last mealtime was %li but deathtime is %li"\
+			printf("%i last_mealtime == %li\t deathtime == %li\n", \
+			data->philo_arr[i]->id, time_since_x(data->philo_arr[i]->last_mealtime), data->time_till_death);
+				// dprintf(fd, "philo %i last mealtime was %li but deathtime is %li"\
 				, data->philo_arr[i]->id, data->philo_arr[i]->last_mealtime, \
 				data->time_till_death);
-				philo_print(data->philo_arr[i], death);
+				philo_print(data->philo_arr[i], death); //here
 				pthread_mutex_lock(data->death_lock);
 				data->end_simulation = true;
 				pthread_mutex_unlock(data->death_lock);

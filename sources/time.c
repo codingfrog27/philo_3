@@ -13,7 +13,7 @@
 #include <sys/time.h>
 #include "philo.h"
 
-long	whattimeisitrightnow(void)
+long	timestamp(void)
 {
 	struct timeval	time;
 
@@ -24,34 +24,25 @@ long	whattimeisitrightnow(void)
 
 long	time_since_x(long x)
 {
+	return (timestamp() - x);
+}
+
+long	time_since_start(void)
+{
 	static long	start_time;
 
 	if (!start_time)
-	{
-		start_time = whattimeisitrightnow();
-		printf("START TIME == %li\n", start_time);
-	}
-	return (whattimeisitrightnow() - start_time - x);
+		start_time = timestamp();
+	return (timestamp() - start_time);
 }
 
 bool	coolsleep(useconds_t sleep_time)
 {
 	long		start_time;
-	long		time_passed;
 	useconds_t	nap_time;
-	//useconds is just an unsigned int?
-	//still needs to be tested, idk if the all the values of usleep and the
-	// time functions translate properly
-	start_time = whattimeisitrightnow();
-	time_passed = 0;
-	nap_time = sleep_time / 100;
-	while (time_passed < sleep_time)
-	{
-		if (usleep(nap_time) == -1)
-			return (false);
-		time_passed = whattimeisitrightnow() - start_time;
-	}
-	return (true);
+
+	start_time = timestamp();
+	nap_time = sleep_time / 50;
+	while (timestamp() - start_time < sleep_time)
+		usleep(nap_time);
 }
-// could be made into one function with a passed bool maybe, but like this I
-// also think it's fine
