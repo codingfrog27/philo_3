@@ -33,7 +33,6 @@ bool	philo_print(t_philo *philo, t_msg_types msg_type)
 
 	if (!all_alive_and_hungry(philo))
 		return (false);
-
 	pthread_mutex_lock(philo->data->print_lock);
 	// printf("%li %sPhilo %i %s\n"C_RESET, time_since_x(0), \
 	// colours[philo->id % 6], philo->id, msgs[msg_type]);
