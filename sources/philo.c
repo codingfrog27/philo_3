@@ -25,18 +25,14 @@ bool	philo_print(t_philo *philo, t_msg_types msg_type)
 	static const char	*msgs[] = {C_PINK"died", C_LCYAN"is thinking", \
 						C_LVIOLET"has taken a fork", C_CHRT"is eating", \
 						C_SPRGR"is sleeping"};
-	// static const char	*msgs[] = {"died", "is thinking", \
-	// 					"has taken a fork", "is eating", \
-	// 					"is sleeping"};
 	static const char	*colours[] = {C_DBLUE, C_LBLUE, C_GREEN, C_YELLOW, \
 									C_ORANGE, C_RED};
 
 	if (!all_alive_and_hungry(philo))
 		return (false);
 	pthread_mutex_lock(philo->data->print_lock);
-	// printf("%li %sPhilo %i %s\n"C_RESET, time_since_x(0), \
-	// colours[philo->id % 6], philo->id, msgs[msg_type]);
-	// printf("%li %i %s\n", time_since_x(0), philo->id, msgs[msg_type]);
+	printf("%li %sPhilo %i %s\n"C_RESET, time_since_start(philo->data), \
+	colours[philo->id % 6], philo->id, msgs[msg_type]);
 	pthread_mutex_unlock(philo->data->print_lock);
 	return (true);
 }
@@ -62,7 +58,7 @@ void	*philo_routine(void *para)
 	pthread_mutex_lock(philo->meal_lock);
 	pthread_mutex_unlock(philo->meal_lock);
 	if (philo->id % 2)
-		coolsleep(100);
+		coolsleep(50);
 	while (1)
 	{
 		if (!philo_print(philo, thinking))
@@ -98,7 +94,7 @@ void	update_last_mealtime(t_philo *philo)
 {
 	pthread_mutex_lock(philo->meal_lock);
 	philo->last_mealtime = timestamp();
-	printf("%i LAST MEALTIME = %li\n", philo->id, philo->last_mealtime);
+	// printf("%i LAST MEALTIME = %li\n", philo->id, philo->last_mealtime);
 	philo->meals_eaten++;
 	pthread_mutex_unlock(philo->meal_lock);
 }

@@ -1,3 +1,19 @@
+21-09-2023
+
+-OKAY So
+
+or I can just timestamp current time whenever philo eats, and then see
+if the diff between last mealtime and current time > time to die
+AKA == (timestamp - lastmealtime) > time to die
+
+OR
+when I update mealtime I make their last mealtime their "time till death"
+and make it <timestamp + death time > and then do
+ (lastmealtime + deathtime) > timestamp
+
+
+
+
 12-09-2023
 
 -Fix mealtime updating, approaches are in notebook

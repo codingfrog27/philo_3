@@ -19,6 +19,9 @@
 
 #include "philo.h"
 
+static void	start_simulation(t_data *data);
+
+
 // static bool	print_args(t_data *data);
 
 // no differentiation between malloc and bad input parse fail, but thats ok
@@ -26,12 +29,37 @@ int	main(int argc, char **argv)
 {
 	t_data		data;
 
-	if (argc < 5 || argc > 6 || !data_init(argc, argv, &data))
+	if (argc < 5 || argc > 6 || !parsing(&data, argv, argc))
 		return (printf(C_RED PARSE_ERROR));
-	// if (!print_args(&data))
-	// 	return (printf(C_RED MALLOC_ERROR));
+	if (!philo_init(&data) || !init_all_mutex(&data))
+		return (printf(C_RED MALLOC_ERROR));
+	start_simulation(&data);
 	return (0);
 }
+
+static void	start_simulation(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	while (i < data->nbr_of_philos)
+	{
+		pthread_mutex_lock(data->philo_arr[i]->meal_lock);
+		pthread_create(data->philo_arr[i]->thread_id, NULL, philo_routine, \
+		(void *)data->philo_arr[i]);
+		i++;
+	}
+	i--;
+	data->start_time = timestamp();
+	while (i >= 0)
+	{
+		data->philo_arr[i]->last_mealtime = data->start_time;
+		pthread_mutex_unlock(data->philo_arr[i]->meal_lock);
+		i--;
+	}
+	monitor_philos(data);
+}
+
 
 // bool	start_simulation(t_data *data)
 // {
@@ -47,12 +75,4 @@ int	main(int argc, char **argv)
 // 	}
 // 	pthread_mutex_unlock(&data->print_lock);
 // 	return (monitor_in_parent_thread(data));
-// }
-
-// static bool	print_args(t_data *data)
-// {
-// 	printf("deathtime = %li\n there are %li philos\n %li %li %li\n", \
-// 	data->time_till_death, data->nbr_of_philos, \
-// 	data->time_to_eat, data->sleep_time, data->meals_needed);
-// 	return (true);
 // }

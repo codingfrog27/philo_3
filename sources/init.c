@@ -12,37 +12,10 @@
 
 #include "philo.h"
 
-bool	parsing(t_data *data, char **argv, int argc);
-int		philatoi(char *str);
-bool	philo_init(t_data	*data);
-bool	init_all_mutex(t_data *data);
-void	assign_left_forks(t_data *data);
+static int		philatoi(char *str);
+static void	assign_left_forks(t_data *data);
 
 //pthread create not protected atm
-bool	data_init(int ac, char **av, t_data *data)
-{
-	int	i;
-
-	i = 0;
-	if (!parsing(data, av, ac) || !philo_init(data) || !init_all_mutex(data))
-		return (false);
-	while (i < data->nbr_of_philos)
-	{
-		pthread_mutex_lock(data->philo_arr[i]->meal_lock);
-		pthread_create(data->philo_arr[i]->thread_id, NULL, philo_routine, \
-		(void *)data->philo_arr[i]);
-		i++;
-	}
-	i--;
-	// data->start_time = timestamp();
-	while (i >= 0)
-	{
-		pthread_mutex_unlock(data->philo_arr[i]->meal_lock);
-		i--;
-	}
-	monitor_philos(data);
-	return (true);
-}
 
 //so sad C doesn't allow you to while loop through struct members
 bool	parsing(t_data *data, char **argv, int argc)
@@ -64,6 +37,31 @@ bool	parsing(t_data *data, char **argv, int argc)
 		return (false);
 	return (true);
 }
+
+/**
+ * @brief just a small atoi for philo (libft not allowed)
+ * since only positive nbrs are allowed for input >0 can be error return
+ * So it might look like it misses checks but I think the isnum is sufficient?
+ * @param str
+ * @return converted int
+ */
+static int	philatoi(char *str)
+{
+	long	ret;
+	int		i;
+
+	ret = 0;
+	i = 0;
+	while (str[i])
+	{
+		ret = (ret * 10) + (str[i] - '0');
+		if (str[i] < '0' || str[i] > '9' || ret > INT_MAX)
+			return (0);
+		i++;
+	}
+	return ((int)ret);
+}
+
 
 bool	philo_init(t_data	*data)
 {
@@ -93,30 +91,6 @@ bool	philo_init(t_data	*data)
 	return (true);
 }
 
-/**
- * @brief just a small atoi for philo (libft not allowed)
- * since only positive nbrs are allowed for input >0 can be error return
- * So it might look like it misses checks but I think the isnum is sufficient?
- * @param str
- * @return converted int
- */
-int	philatoi(char *str)
-{
-	long	ret;
-	int		i;
-
-	ret = 0;
-	i = 0;
-	while (str[i])
-	{
-		ret = (ret * 10) + (str[i] - '0');
-		if (str[i] < '0' || str[i] > '9' || ret > INT_MAX)
-			return (0);
-		i++;
-	}
-	return ((int)ret);
-}
-
 bool	init_all_mutex(t_data *data)
 {
 	int		i;
@@ -144,7 +118,7 @@ bool	init_all_mutex(t_data *data)
 	return (true);
 }
 
-void	assign_left_forks(t_data *data)
+static void	assign_left_forks(t_data *data)
 {
 	int		i;
 	t_philo	**philos;

@@ -27,22 +27,16 @@ long	time_since_x(long x)
 	return (timestamp() - x);
 }
 
-long	time_since_start(void)
+long	time_since_start(t_data *data)
 {
-	static long	start_time;
-
-	if (!start_time)
-		start_time = timestamp();
-	return (timestamp() - start_time);
+	return (timestamp() - data->start_time);
 }
 
-bool	coolsleep(useconds_t sleep_time)
+void	coolsleep(useconds_t sleep_time)
 {
 	long		start_time;
-	useconds_t	nap_time;
 
 	start_time = timestamp();
-	nap_time = sleep_time / 50;
 	while (timestamp() - start_time < sleep_time)
-		usleep(nap_time);
+		usleep(250);
 }

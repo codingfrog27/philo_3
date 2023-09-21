@@ -33,3 +33,26 @@ bool	philo_print(t_philo *philo, t_msg_types msg_type)
 	return (true);
 }
 // activity_colours[msg_type]
+
+static bool	print_args(t_data *data)
+{
+	printf("deathtime = %li\n there are %li philos\n %li %li %li\n", \
+	data->time_till_death, data->nbr_of_philos, \
+	data->time_to_eat, data->sleep_time, data->meals_needed);
+	return (true);
+}
+
+static const char	*no_colour_msgs[] = {"died", "is thinking", \
+						"has taken a fork", "is eating", \
+						"is sleeping"};
+
+
+// from monitoring.c
+
+	// int fd = open("test.txt", O_RDWR);
+			// printf("%i last_mealtime == %li\t deathtime == %li\n", \
+			// data->philo_arr[i]->id,time_since_x(data->philo_arr[i]->\
+			// last_mealtime), data->time_till_death);
+				// dprintf(fd, "philo %i last mealtime was %li but deathtime is %li"\
+				// , data->philo_arr[i]->id, data->philo_arr[i]->last_mealtime, \
+				// data->time_till_death);

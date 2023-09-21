@@ -21,7 +21,7 @@ LINKFLAGS 		?= -I include
 #sources and objects -------------
 
 SOURCEFILES	:=	main.c \
-				parsing.c \
+				init.c \
 				philo.c \
 				time.c \
 				monitor.c \

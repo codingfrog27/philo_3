@@ -70,7 +70,11 @@ struct s_data
 	t_philo			**philo_arr;
 };
 
-bool	data_init(int argc, char **argv, t_data *data);
+//init
+bool	parsing(t_data *data, char **argv, int argc);
+bool	init_all_mutex(t_data *data);
+
+
 bool	philo_init(t_data	*data);
 bool	setting_the_table(t_data *data);
 bool	starting_threads(t_data *data);
@@ -80,7 +84,7 @@ bool	philo_print(t_philo *philo, t_msg_types msg_type);
 
 //time
 long	time_since_x(long start);
-long	time_since_start(void);
+long	time_since_start(t_data *data);
 long	timestamp(void);
-bool	coolsleep(useconds_t sleep_time);
+void	coolsleep(useconds_t sleep_time);
 #endif // !PHILO_H
