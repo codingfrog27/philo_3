@@ -1,3 +1,19 @@
+22
+MAIN OBJS
+1 single philo handler
+2 proper cleanup and ending
+
+QUESTION
+can i free the memory after I pthread join? think so but
+if not threadid might have to be stored in data
+
+OPTIONAL OBJS
+1 orlando fork switch on uneven
+2 Jisse sleep first on uneven
+3 inbetween sleep checks? (prolly nah tho)
+
+
+
 21-09-2023
 
 -OKAY So

@@ -17,10 +17,10 @@
 // to doing it this way?
 void	cleanup_threads_and_end(t_data *data);
 bool	everyone_full(t_data *data);
+static void	free_data(t_data *data)
 
 void	monitor_philos(t_data *data)
 {
-	//test
 	int	i;
 
 	i = 0;
@@ -34,11 +34,11 @@ void	monitor_philos(t_data *data)
 				> data->time_till_death)
 			{
 
-				philo_print(data->philo_arr[i], death); //here
+				pthread_mutex_unlock(data->philo_arr[i]->meal_lock);
 				pthread_mutex_lock(data->death_lock);
 				data->end_simulation = true;
+				philo_print(data->philo_arr[i], death);
 				pthread_mutex_unlock(data->death_lock);
-				pthread_mutex_unlock(data->philo_arr[i]->meal_lock);
 				return (cleanup_threads_and_end(data));
 			}
 			if (data->philo_arr[i]->meals_eaten >= data->meals_needed)
@@ -62,11 +62,33 @@ void	cleanup_threads_and_end(t_data *data)
 		pthread_join(*data->philo_arr[i]->thread_id, NULL);
 		i++;
 	}
+	free_data(data);
 	if (everyone_full(data))
 		printf("EVERYONE FULL YIPPIE\n");
 }
 
-bool	everyone_full(t_data *data)
+// do i want ifs at every free for safety? shouldnt be needed tho
+static void free_data(t_data *data)
+{
+	int	i;
+	i = 0;
+	pthread_mutex_destroy(data->death_lock);
+	pthread_mutex_destroy(data->print_lock);
+	free(data->death_lock);
+	free(data->print_lock);
+	while (i < data->nbr_of_philos)
+	{
+		free(data->philo_arr[i]->meal_lock);
+		free(data->philo_arr[i]->meal_lock);
+		free(data->philo_arr[i]->meal_lock);
+		free(data->philo_arr[i]);
+		i++;
+	}
+
+	free(data->);
+	free(data->);
+}
+;bool	everyone_full(t_data *data)
 {
 	int	i;
 	int	full_philos;

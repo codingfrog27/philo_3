@@ -15,7 +15,7 @@
 bool		all_alive_and_hungry(t_philo *philo);
 static void	mealtime(t_philo *philo);
 static void	sleeptime(t_philo *philo);
-void		update_last_mealtime(t_philo *philo);
+static void		update_last_mealtime(t_philo *philo);
 
 //print lock never gets unlocked on fail, partially on purpose but will also
 // cause deadlock if I dont use detach
@@ -28,7 +28,7 @@ bool	philo_print(t_philo *philo, t_msg_types msg_type)
 	static const char	*colours[] = {C_DBLUE, C_LBLUE, C_GREEN, C_YELLOW, \
 									C_ORANGE, C_RED};
 
-	if (!all_alive_and_hungry(philo))
+	if (!all_alive_and_hungry(philo) && msg_type != death)
 		return (false);
 	pthread_mutex_lock(philo->data->print_lock);
 	printf("%li %sPhilo %i %s\n"C_RESET, time_since_start(philo->data), \
@@ -64,12 +64,13 @@ void	*philo_routine(void *para)
 		if (!philo_print(philo, thinking))
 			return (NULL);
 		mealtime(philo);
-		sleeptime(philo);
+		if (!philo_print(philo, sleeping))
+			return (NULL);
+		coolsleep(philo->data->sleep_time);
 	}
 	return (NULL);
 }
 
-// never returns false but needs to be void anyways
 static void	mealtime(t_philo *philo)
 {
 	pthread_mutex_lock(philo->left_fork);
@@ -81,20 +82,13 @@ static void	mealtime(t_philo *philo)
 	coolsleep(philo->data->time_to_eat);
 	pthread_mutex_unlock(philo->left_fork);
 	pthread_mutex_unlock(philo->right_fork);
-	//update_last_mealtime(philo);
 }
 
-static void	sleeptime(t_philo *philo)
-{
-	philo_print(philo, sleeping);
-	coolsleep(philo->data->sleep_time);
-}
-
-void	update_last_mealtime(t_philo *philo)
+// could be thrown into mealtime, also can I do this b4 the print? ask around
+static void	update_last_mealtime(t_philo *philo)
 {
 	pthread_mutex_lock(philo->meal_lock);
 	philo->last_mealtime = timestamp();
-	// printf("%i LAST MEALTIME = %li\n", philo->id, philo->last_mealtime);
 	philo->meals_eaten++;
 	pthread_mutex_unlock(philo->meal_lock);
 }
