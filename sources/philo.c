@@ -15,18 +15,18 @@
 bool		all_alive_and_hungry(t_philo *philo);
 static void	mealtime(t_philo *philo);
 static void	sleeptime(t_philo *philo);
-static void		update_last_mealtime(t_philo *philo);
+static void	update_last_mealtime(t_philo *philo);
 
 //print lock never gets unlocked on fail, partially on purpose but will also
 // cause deadlock if I dont use detach
 // TODO ->UNLOCK PRINT LOCK AND MOVE DEATH CHECK TO MONITOR THREAD
 bool	philo_print(t_philo *philo, t_msg_types msg_type)
 {
-	static const char	*msgs[] = {C_PINK"died", C_LCYAN"is thinking", \
+	static const char	*msgs[] = {C_RED"died", C_LCYAN"is thinking", \
 						C_LVIOLET"has taken a fork", C_CHRT"is eating", \
 						C_SPRGR"is sleeping"};
 	static const char	*colours[] = {C_DBLUE, C_LBLUE, C_GREEN, C_YELLOW, \
-									C_ORANGE, C_RED};
+									C_ORANGE, C_PINK};
 
 	if (!all_alive_and_hungry(philo) && msg_type != death)
 		return (false);
@@ -37,7 +37,8 @@ bool	philo_print(t_philo *philo, t_msg_types msg_type)
 	return (true);
 }
 
-
+//do I wanna change this lock to the meal check lock? or another individual lock
+// ? Less bottleneck but also its 1 if check and more delay when philo dies
 bool	all_alive_and_hungry(t_philo *philo)
 {
 	bool	continue_sim;
@@ -58,7 +59,7 @@ void	*philo_routine(void *para)
 	pthread_mutex_lock(philo->meal_lock);
 	pthread_mutex_unlock(philo->meal_lock);
 	if (philo->id % 2)
-		coolsleep(50);
+		coolsleep(philo->data->time_to_eat / 2);
 	while (1)
 	{
 		if (!philo_print(philo, thinking))

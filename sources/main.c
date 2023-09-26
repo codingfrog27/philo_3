@@ -46,7 +46,7 @@ static void	start_simulation(t_data *data)
 	{
 		pthread_mutex_lock(data->philo_arr[i]->meal_lock);
 		pthread_create(data->philo_arr[i]->thread_id, NULL, philo_routine, \
-		(void *)data->philo_arr[i]);
+		(void *)data->philo_arr[i]); //protect!
 		i++;
 	}
 	i--;

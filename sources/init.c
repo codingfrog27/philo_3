@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   parsing.c                                          :+:    :+:            */
+/*   init.c                                             :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mde-cloe <mde-cloe@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
@@ -13,11 +13,11 @@
 #include "philo.h"
 
 static int		philatoi(char *str);
-static void	assign_left_forks(t_data *data);
+static void	assign_right_forks(t_data *data);
 
 //pthread create not protected atm
 
-//so sad C doesn't allow you to while loop through struct members
+//so sad C doesn't allow you to while loop through struct membersm, could
 bool	parsing(t_data *data, char **argv, int argc)
 {
 	int	i;
@@ -62,7 +62,6 @@ static int	philatoi(char *str)
 	return ((int)ret);
 }
 
-
 bool	philo_init(t_data	*data)
 {
 	int				i;
@@ -101,7 +100,7 @@ bool	init_all_mutex(t_data *data)
 	data->print_lock = malloc(sizeof(pthread_mutex_t));
 	if (!data->death_lock || !data->forks)
 		return (false);
-	pthread_mutex_init(data->print_lock, NULL);
+	pthread_mutex_init(data->print_lock, NULL); //protect!!
 	pthread_mutex_init(data->death_lock, NULL);
 	while (i < data->nbr_of_philos)
 	{
@@ -114,11 +113,11 @@ bool	init_all_mutex(t_data *data)
 		data->philo_arr[i]->left_fork = data->forks[i];
 		i++;
 	}
-	assign_left_forks(data);
+	assign_right_forks(data);
 	return (true);
 }
 
-static void	assign_left_forks(t_data *data)
+static void	assign_right_forks(t_data *data)
 {
 	int		i;
 	t_philo	**philos;
@@ -132,3 +131,4 @@ static void	assign_left_forks(t_data *data)
 	}
 	philos[i]->right_fork = philos[0]->left_fork;
 }
+//last philo has switched forks (aka grabs right first to avoid deadlock)

@@ -58,7 +58,7 @@ struct s_data
 {
 	long			nbr_of_philos;
 	long			time_till_death;
-	long			time_to_eat;
+	long		time_to_eat;
 	long			sleep_time;
 	long			meals_needed;
 	long			full_philos;

@@ -15,16 +15,15 @@
 
 //could I just detach at creation and not need this function? is there merit
 // to doing it this way?
-void	cleanup_threads_and_end(t_data *data);
-bool	everyone_full(t_data *data);
-static void	free_data(t_data *data)
+void		cleanup_threads_and_end(t_data *data);
+bool		everyone_full(t_data *data);
+static void	free_data(t_data *data);
 
 void	monitor_philos(t_data *data)
 {
 	int	i;
 
 	i = 0;
-
 	while (1)
 	{
 		while (i < data->nbr_of_philos)
@@ -33,12 +32,11 @@ void	monitor_philos(t_data *data)
 			if (time_since_x(data->philo_arr[i]->last_mealtime) \
 				> data->time_till_death)
 			{
-
 				pthread_mutex_unlock(data->philo_arr[i]->meal_lock);
 				pthread_mutex_lock(data->death_lock);
 				data->end_simulation = true;
-				philo_print(data->philo_arr[i], death);
 				pthread_mutex_unlock(data->death_lock);
+				philo_print(data->philo_arr[i], death);
 				return (cleanup_threads_and_end(data));
 			}
 			if (data->philo_arr[i]->meals_eaten >= data->meals_needed)
@@ -62,33 +60,33 @@ void	cleanup_threads_and_end(t_data *data)
 		pthread_join(*data->philo_arr[i]->thread_id, NULL);
 		i++;
 	}
-	free_data(data);
+	// free_data(data);
 	if (everyone_full(data))
 		printf("EVERYONE FULL YIPPIE\n");
 }
 
 // do i want ifs at every free for safety? shouldnt be needed tho
-static void free_data(t_data *data)
-{
-	int	i;
-	i = 0;
-	pthread_mutex_destroy(data->death_lock);
-	pthread_mutex_destroy(data->print_lock);
-	free(data->death_lock);
-	free(data->print_lock);
-	while (i < data->nbr_of_philos)
-	{
-		free(data->philo_arr[i]->meal_lock);
-		free(data->philo_arr[i]->meal_lock);
-		free(data->philo_arr[i]->meal_lock);
-		free(data->philo_arr[i]);
-		i++;
-	}
+// static	void free_data(t_data *data)
+// {
+// 	int	i;
+// 	i = 0;
+// 	pthread_mutex_destroy(data->death_lock);
+// 	pthread_mutex_destroy(data->print_lock);
+// 	free(data->death_lock);
+// 	free(data->print_lock);
+// 	while (i < data->nbr_of_philos)
+// 	{
+// 		free(data->philo_arr[i]->meal_lock);
+// 		free(data->philo_arr[i]->meal_lock);
+// 		free(data->philo_arr[i]->meal_lock);
+// 		free(data->philo_arr[i]);
+// 		i++;
+// 	}
 
-	free(data->);
-	free(data->);
-}
-;bool	everyone_full(t_data *data)
+// 	free(data->);
+// 	free(data->);
+// }
+bool	everyone_full(t_data *data)
 {
 	int	i;
 	int	full_philos;
