@@ -12,7 +12,7 @@
 
 #include "philo.h"
 
-static int		philatoi(char *str);
+static int	philatoi(char *str);
 static void	assign_right_forks(t_data *data);
 
 //pthread create not protected atm

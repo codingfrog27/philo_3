@@ -14,7 +14,7 @@
 
 bool		all_alive_and_hungry(t_philo *philo);
 static void	mealtime(t_philo *philo);
-static void	sleeptime(t_philo *philo);
+// static void	sleeptime(t_philo *philo);
 static void	update_last_mealtime(t_philo *philo);
 
 //print lock never gets unlocked on fail, partially on purpose but will also
@@ -31,7 +31,7 @@ bool	philo_print(t_philo *philo, t_msg_types msg_type)
 	if (!all_alive_and_hungry(philo) && msg_type != death)
 		return (false);
 	pthread_mutex_lock(philo->data->print_lock);
-	printf("%li %sPhilo %i %s\n"C_RESET, time_since_start(philo->data), \
+	printf("%li %s%i %s\n"C_RESET, time_since_start(philo->data), \
 	colours[philo->id % 6], philo->id, msgs[msg_type]);
 	pthread_mutex_unlock(philo->data->print_lock);
 	return (true);

@@ -1,3 +1,24 @@
+OCT 12
+
+1 monitor problems with full checking
+		-if max meals arg not given it autocompletes
+		-and in general everyone full triggers too quickly (b4 everyone has actually eaten)
+
+
+2 timestamps are all in mili not microseconds, causing less acurate timestamps
+
+3 put a still alive check in sleep after all?
+
+4 ask vincent if there was a third thinking
+
+Other ppl that can check/help: Acco, Astrid
+
+
+PS: DONT FORGET TO UPLOAD IN PHILO SUBDIR WHEN TURNING IN PROJECT
+
+
+
+
 22
 MAIN OBJS
 1 single philo handler

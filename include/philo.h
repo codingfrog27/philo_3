@@ -58,7 +58,7 @@ struct s_data
 {
 	long			nbr_of_philos;
 	long			time_till_death;
-	long		time_to_eat;
+	long			time_to_eat;
 	long			sleep_time;
 	long			meals_needed;
 	long			full_philos;
@@ -79,7 +79,7 @@ bool	philo_init(t_data	*data);
 bool	setting_the_table(t_data *data);
 bool	starting_threads(t_data *data);
 void	*philo_routine(void *para);
-void	monitor_philos(t_data *data);
+bool	monitor_philos(t_data *data);
 bool	philo_print(t_philo *philo, t_msg_types msg_type);
 
 //time

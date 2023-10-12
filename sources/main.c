@@ -20,20 +20,22 @@
 #include "philo.h"
 
 static void	start_simulation(t_data *data);
-
-
-// static bool	print_args(t_data *data);
+void		cleanup_threads_and_end(t_data *data, bool full);
+static void	free_data(t_data *data);
 
 // no differentiation between malloc and bad input parse fail, but thats ok
 int	main(int argc, char **argv)
 {
 	t_data		data;
+	bool		all_alive;
 
 	if (argc < 5 || argc > 6 || !parsing(&data, argv, argc))
 		return (printf(C_RED PARSE_ERROR));
 	if (!philo_init(&data) || !init_all_mutex(&data))
 		return (printf(C_RED MALLOC_ERROR));
 	start_simulation(&data);
+	all_alive = monitor_philos(&data);
+	cleanup_threads_and_end(&data, all_alive);
 	return (0);
 }
 
@@ -57,22 +59,47 @@ static void	start_simulation(t_data *data)
 		pthread_mutex_unlock(data->philo_arr[i]->meal_lock);
 		i--;
 	}
-	monitor_philos(data);
 }
 
+//sleeps for a moment to let all threads finish exiting
+void	cleanup_threads_and_end(t_data *data, bool full)
+{
+	int	i;
 
-// bool	start_simulation(t_data *data)
-// {
-// 	int	i;
+	usleep(1000);
+	i = 0;
+	while (i < data->nbr_of_philos)
+	{
+		pthread_join(*data->philo_arr[i]->thread_id, NULL);
+		i++;
+	}
+	free_data(data);
+	if (full)
+		printf("EVERYONE FULL YIPPIE\n");
+}
 
-// 	i = 0;
-// 	while (i < data->nbr_of_philos)
-// 	{
-// 		if (pthread_create(data->thread_id[i], NULL, philo_routine,
-// 		(void *)&data->philo_arr[i]) != 0)
-// 			return (join_threads_and_end(data, i));
-// 		i++;
-// 	}
-// 	pthread_mutex_unlock(&data->print_lock);
-// 	return (monitor_in_parent_thread(data));
-// }
+// do i want ifs at every free for safety? shouldnt be needed tho
+static void	free_data(t_data *data)
+{
+	int		i;
+	t_philo	*philo;
+
+	i = 0;
+	pthread_mutex_destroy(data->death_lock);
+	free(data->death_lock);
+	pthread_mutex_destroy(data->print_lock);
+	free(data->print_lock);
+	while (i < data->nbr_of_philos)
+	{
+		philo = data->philo_arr[i];
+		pthread_mutex_destroy(philo->meal_lock);
+		free(philo->meal_lock);
+		pthread_mutex_destroy(philo->left_fork);
+		free(philo->left_fork);
+		free(philo->thread_id);
+		free(philo);
+		i++;
+	}
+	free(data->philo_arr);
+	free(data->forks);
+}
