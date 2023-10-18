@@ -1,3 +1,9 @@
+OCT 18
+FIXED A MEMORY THING WITH VALGRIND LEGGO
+
+
+
+
 OCT 12
 
 1 monitor problems with full checking
@@ -8,8 +14,6 @@ OCT 12
 2 timestamps are all in mili not microseconds, causing less acurate timestamps
 
 3 put a still alive check in sleep after all?
-
-4 ask vincent if there was a third thinking
 
 Other ppl that can check/help: Acco, Astrid
 

@@ -66,6 +66,9 @@ void	cleanup_threads_and_end(t_data *data, bool full)
 {
 	int	i;
 
+	pthread_mutex_lock(data->death_lock);
+	data->end_simulation = true;
+	pthread_mutex_unlock(data->death_lock); //change to lock per philo?
 	usleep(1000);
 	i = 0;
 	while (i < data->nbr_of_philos)
@@ -94,7 +97,7 @@ static void	free_data(t_data *data)
 		philo = data->philo_arr[i];
 		pthread_mutex_destroy(philo->meal_lock);
 		free(philo->meal_lock);
-		pthread_mutex_destroy(philo->left_fork);
+		// pthread_mutex_destroy(philo->left_fork);
 		free(philo->left_fork);
 		free(philo->thread_id);
 		free(philo);

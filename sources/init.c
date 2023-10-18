@@ -96,7 +96,7 @@ bool	init_all_mutex(t_data *data)
 
 	i = 0;
 	data->death_lock = malloc(sizeof(pthread_mutex_t));
-	data->forks = malloc(sizeof(pthread_mutex_t *) * (data->nbr_of_philos - 1));
+	data->forks = malloc(sizeof(pthread_mutex_t *) * (data->nbr_of_philos));
 	data->print_lock = malloc(sizeof(pthread_mutex_t));
 	if (!data->death_lock || !data->forks)
 		return (false);

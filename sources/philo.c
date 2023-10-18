@@ -17,25 +17,39 @@ static void	mealtime(t_philo *philo);
 // static void	sleeptime(t_philo *philo);
 static void	update_last_mealtime(t_philo *philo);
 
-//print lock never gets unlocked on fail, partially on purpose but will also
-// cause deadlock if I dont use detach
-// TODO ->UNLOCK PRINT LOCK AND MOVE DEATH CHECK TO MONITOR THREAD
+
+// bool	colour_philo_print(t_philo *philo, t_msg_types msg_type)
+// {
+// 	static const char	*msgs[] = {C_RED"died", C_LCYAN"is thinking",
+// 						C_LVIOLET"has taken a fork", C_CHRT"is eating",
+// 						C_SPRGR"is sleeping"};
+// 	static const char	*colours[] = {C_DBLUE, C_LBLUE, C_GREEN, C_YELLOW,
+// 									C_ORANGE, C_PINK};
+
+// 	if (!all_alive_and_hungry(philo) && msg_type != death)
+// 		return (false);
+// 	pthread_mutex_lock(philo->data->print_lock);
+// 	printf("%li %s%i %s\n"C_RESET, time_since_start(philo->data),
+// 	colours[philo->id % 6], philo->id, msgs[msg_type]);
+// 	pthread_mutex_unlock(philo->data->print_lock);
+// 	return (true);
+// }
+
 bool	philo_print(t_philo *philo, t_msg_types msg_type)
 {
-	static const char	*msgs[] = {C_RED"died", C_LCYAN"is thinking", \
-						C_LVIOLET"has taken a fork", C_CHRT"is eating", \
-						C_SPRGR"is sleeping"};
-	static const char	*colours[] = {C_DBLUE, C_LBLUE, C_GREEN, C_YELLOW, \
-									C_ORANGE, C_PINK};
+	static const char	*msgs[] = {"died", "is thinking", \
+						"has taken a fork", "is eating", \
+						"is sleeping"};
 
 	if (!all_alive_and_hungry(philo) && msg_type != death)
 		return (false);
 	pthread_mutex_lock(philo->data->print_lock);
-	printf("%li %s%i %s\n"C_RESET, time_since_start(philo->data), \
-	colours[philo->id % 6], philo->id, msgs[msg_type]);
+	printf("%li %i %s\n"C_RESET, time_since_start(philo->data), \
+	philo->id, msgs[msg_type]);
 	pthread_mutex_unlock(philo->data->print_lock);
 	return (true);
 }
+
 
 //do I wanna change this lock to the meal check lock? or another individual lock
 // ? Less bottleneck but also its 1 if check and more delay when philo dies
@@ -90,6 +104,7 @@ static void	update_last_mealtime(t_philo *philo)
 {
 	pthread_mutex_lock(philo->meal_lock);
 	philo->last_mealtime = timestamp();
+	printf("testie\n");
 	philo->meals_eaten++;
 	pthread_mutex_unlock(philo->meal_lock);
 }
