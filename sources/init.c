@@ -35,6 +35,7 @@ bool	parsing(t_data *data, char **argv, int argc)
 	if (data->nbr_of_philos == 0 || data->time_till_death == 0 || \
 	data->time_to_eat == 0 || data->sleep_time == 0 || data->meals_needed == 0)
 		return (false);
+
 	return (true);
 }
 
@@ -45,7 +46,7 @@ bool	parsing(t_data *data, char **argv, int argc)
  * @param str
  * @return converted int
  */
-static int	philatoi(char *str)
+ int	philatoi(char *str)
 {
 	long	ret;
 	int		i;

@@ -41,6 +41,7 @@ bool	monitor_philos(t_data *data)
 		if (full_philos == data->nbr_of_philos)
 			return (true);
 		i = 0;
+		full_philos = 0;
 	}
 }
 

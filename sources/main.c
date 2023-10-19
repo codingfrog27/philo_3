@@ -31,11 +31,12 @@ int	main(int argc, char **argv)
 
 	if (argc < 5 || argc > 6 || !parsing(&data, argv, argc))
 		return (printf(C_RED PARSE_ERROR));
+	if (data.nbr_of_philos == 1)
+		return (printf(SINGLE_PHILO_ERR));
 	if (!philo_init(&data) || !init_all_mutex(&data))
 		return (printf(C_RED MALLOC_ERROR));
 	start_simulation(&data);
 	all_alive = monitor_philos(&data);
-		printf("test");
 	cleanup_threads_and_end(&data, all_alive);
 	return (0);
 }

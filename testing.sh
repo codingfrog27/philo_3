@@ -10,7 +10,7 @@ req_prints=$((meals_to_eat * nbr_of_philos))
 for ((i=1; i<=$num_runs; i++))
 do
     # Run the command and count the number of lines containing "is eating"
-    output=$(./philo $nbr_of_philos 410 200 200 $meals_to_eat | grep "testie" | wc -l)
+    output=$(./philo $nbr_of_philos 410 200 200 $meals_to_eat | grep "is eating" | wc -l)
 
     # Check if the output is 40 or more
     if [ $output -lt $req_prints ]; then

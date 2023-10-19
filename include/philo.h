@@ -25,6 +25,9 @@
 # define PARSE_ERROR "ERROR, input could not be parsed. Make sure to give 5 or \
 6 numeric args\n"
 
+# define SINGLE_PHILO_ERR "how Am I, a lonely philo supposed to eat with just a\
+ singular fork :(())"
+
 # define MALLOC_ERROR "ERROR occured when allocating memory\n"
 
 typedef struct s_data	t_data;

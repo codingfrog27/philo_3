@@ -104,7 +104,7 @@ static void	update_last_mealtime(t_philo *philo)
 {
 	pthread_mutex_lock(philo->meal_lock);
 	philo->last_mealtime = timestamp();
-	printf("testie\n");
 	philo->meals_eaten++;
+	// fprintf(stderr,"hoi im %i: meals eaten == %i\n",philo->id, philo->meals_eaten);
 	pthread_mutex_unlock(philo->meal_lock);
 }
