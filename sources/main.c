@@ -35,6 +35,7 @@ int	main(int argc, char **argv)
 		return (printf(C_RED MALLOC_ERROR));
 	start_simulation(&data);
 	all_alive = monitor_philos(&data);
+		printf("test");
 	cleanup_threads_and_end(&data, all_alive);
 	return (0);
 }
@@ -65,7 +66,6 @@ static void	start_simulation(t_data *data)
 void	cleanup_threads_and_end(t_data *data, bool full)
 {
 	int	i;
-
 	pthread_mutex_lock(data->death_lock);
 	data->end_simulation = true;
 	pthread_mutex_unlock(data->death_lock); //change to lock per philo?
