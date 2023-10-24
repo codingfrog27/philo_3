@@ -25,8 +25,8 @@
 # define PARSE_ERROR "ERROR, input could not be parsed. Make sure to give 5 or \
 6 numeric args\n"
 
-# define SINGLE_PHILO_ERR "how Am I, a lonely philo supposed to eat with just a\
- singular fork :(())"
+# define SINGLE_PHILO_ERR C_RED"Single philo dies sad and\
+ alone without ever eating 😭\n"C_RESET
 
 # define MALLOC_ERROR "ERROR occured when allocating memory\n"
 

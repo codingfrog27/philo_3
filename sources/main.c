@@ -23,11 +23,13 @@ static void	start_simulation(t_data *data);
 void		cleanup_threads_and_end(t_data *data, bool full);
 static void	free_data(t_data *data);
 
+
 // no differentiation between malloc and bad input parse fail, but thats ok
 int	main(int argc, char **argv)
 {
 	t_data		data;
 	bool		all_alive;
+
 
 	if (argc < 5 || argc > 6 || !parsing(&data, argv, argc))
 		return (printf(C_RED PARSE_ERROR));

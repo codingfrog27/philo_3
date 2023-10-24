@@ -46,7 +46,7 @@ bool	parsing(t_data *data, char **argv, int argc)
  * @param str
  * @return converted int
  */
- int	philatoi(char *str)
+int	philatoi(char *str)
 {
 	long	ret;
 	int		i;

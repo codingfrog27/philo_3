@@ -1,1 +1,0 @@
-philo 3 last mealtime was 1694534305690 but deathtime is 410
