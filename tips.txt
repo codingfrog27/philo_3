@@ -1,3 +1,13 @@
+ALMOST DONE (this week plsss) last things
+
+1 increase speed by death lock per philo
+2 change time functions to make them stop rounding off
+3 use new death lock to check for death while sleeping
+
+
+
+
+
 OCT 18
 FIXED A MEMORY THING WITH VALGRIND LEGGO
 
