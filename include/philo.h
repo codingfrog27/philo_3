@@ -34,15 +34,16 @@ typedef struct s_data	t_data;
 
 typedef struct s_philo
 {
+	bool			full;
+	bool			alive;
 	int				id;
 	int				meals_eaten;
-	bool			full;
 	long			last_mealtime;
 	long			start_time;
 
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
-	pthread_mutex_t	*meal_lock;
+	pthread_mutex_t	*philo_lock;
 	pthread_t		*thread_id;
 	t_data			*data;
 }				t_philo;
@@ -66,7 +67,6 @@ struct s_data
 	long			meals_needed;
 	long			full_philos;
 	long			start_time;
-	bool			end_simulation;
 	pthread_mutex_t	*death_lock;
 	pthread_mutex_t	*print_lock;
 	pthread_mutex_t	**forks;
@@ -76,14 +76,17 @@ struct s_data
 //init
 bool	parsing(t_data *data, char **argv, int argc);
 bool	init_all_mutex(t_data *data);
-
-
 bool	philo_init(t_data	*data);
-bool	setting_the_table(t_data *data);
-bool	starting_threads(t_data *data);
+
+//core
 void	*philo_routine(void *para);
-bool	monitor_philos(t_data *data);
 bool	philo_print(t_philo *philo, t_msg_types msg_type);
+bool	monitor_philos(t_data *data);
+
+//cleanup
+void	cleanup_threads_and_end(t_data *data, bool full, int nbr);
+void	kill_everyone(t_data *data);
+
 
 //time
 long	time_since_x(long start);

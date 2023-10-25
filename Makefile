@@ -14,9 +14,8 @@
 
 NAME 			:= philo
 CC				= gcc
-COMPIL_FLAGS	?= -Wall -Wextra #-Werror
-DEBUG_FLAGS		?=
-#-fsanitize=thread
+COMPIL_FLAGS	?= -Wall -Wextra -Werror
+DEBUG_FLAGS		?= -fsanitize=thread
 LINKFLAGS 		?= -I include
 #sources and objects -------------
 
@@ -25,8 +24,7 @@ SOURCEFILES	:=	main.c \
 				philo.c \
 				time.c \
 				monitor.c \
-				#utils.c \
-				init.c \
+				cleanup.c
 
 OFILES	:=	$(SOURCEFILES:.c=.o)
 SRC_DIR	:=	./sources/
@@ -67,7 +65,7 @@ re: fclean all
 #-----------------easy testing---------------
 
 test: $(NAME) $(OBJS) $(SRCS)
-	@./philo 50 410 200 200 20
+	@./philo 4 410 200 200 20
 
 #//4 410 200 200
 #ARGS ARE <NB OF PHILOS> 2 <DIE TIME> 3 <EAT TIME> 4<SLEEL TIME> 5<MAX MEALS>

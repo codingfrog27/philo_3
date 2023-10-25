@@ -40,8 +40,12 @@ bool	philo_print(t_philo *philo, t_msg_types msg_type)
 	static const char	*msgs[] = {"died", "is thinking", \
 						"has taken a fork", "is eating", \
 						"is sleeping"};
+	bool				alive;
 
-	if (!all_alive_and_hungry(philo) && msg_type != death)
+	pthread_mutex_lock(philo->philo_lock);
+	alive = philo->alive;
+	pthread_mutex_unlock(philo->philo_lock);
+	if (!alive && msg_type != death)
 		return (false);
 	pthread_mutex_lock(philo->data->print_lock);
 	printf("%li %i %s\n"C_RESET, time_since_start(philo->data), \
@@ -51,27 +55,13 @@ bool	philo_print(t_philo *philo, t_msg_types msg_type)
 }
 
 
-//do I wanna change this lock to the meal check lock? or another individual lock
-// ? Less bottleneck but also its 1 if check and more delay when philo dies
-bool	all_alive_and_hungry(t_philo *philo)
-{
-	bool	continue_sim;
-
-	continue_sim = true;
-	pthread_mutex_lock(philo->data->death_lock);
-	if (philo->data->end_simulation)
-		continue_sim = false;
-	pthread_mutex_unlock(philo->data->death_lock);
-	return (continue_sim);
-}
-
 void	*philo_routine(void *para)
 {
 	t_philo	*philo;
 
 	philo = (t_philo *)para;
-	pthread_mutex_lock(philo->meal_lock);
-	pthread_mutex_unlock(philo->meal_lock);
+	pthread_mutex_lock(philo->philo_lock);
+	pthread_mutex_unlock(philo->philo_lock);
 	if (philo->id % 2)
 		coolsleep(philo->data->time_to_eat / 2);
 	while (1)
@@ -102,10 +92,8 @@ static void	mealtime(t_philo *philo)
 // could be thrown into mealtime, also can I do this b4 the print? ask around
 static void	update_last_mealtime(t_philo *philo)
 {
-	pthread_mutex_lock(philo->meal_lock);
+	pthread_mutex_lock(philo->philo_lock);
 	philo->last_mealtime = timestamp();
 	philo->meals_eaten++;
-	dprintf(philo->data->TEST_FD,"hoi im %i: meals eaten == %i\n"\
-	, philo->id, philo->meals_eaten);
-	pthread_mutex_unlock(philo->meal_lock);
+	pthread_mutex_unlock(philo->philo_lock);
 }

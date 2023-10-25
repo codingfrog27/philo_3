@@ -1,3 +1,13 @@
+ALMOST ALMOST
+1 done, protection also done, still not fast enough so COULD try duco strat
+which is: make the forks mutex protected bools and let a grab fork function
+simply loop over them untill they're both true. Then it can eat and another drop
+forks function can turn them true again afterwards
+
+^-- does this not cause higher die chance if theres no que system?
+
+
+
 ALMOST DONE (this week plsss) last things
 
 1 increase speed by death lock per philo

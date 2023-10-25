@@ -27,7 +27,6 @@ bool	parsing(t_data *data, char **argv, int argc)
 	data->time_till_death = philatoi(argv[i++]);
 	data->time_to_eat = philatoi(argv[i++]);
 	data->sleep_time = philatoi(argv[i++]);
-	data->end_simulation = false;
 	data->full_philos = 0;
 	data->meals_needed = -1;
 	if (argc == 6)
@@ -79,10 +78,11 @@ bool	philo_init(t_data	*data)
 		thread = malloc(sizeof(pthread_t));
 		if (!philos[i] || !thread)
 			return (false);
+		philos[i]->full = false;
+		philos[i]->alive = true;
 		philos[i]->thread_id = thread;
 		philos[i]->id = i + 1;
 		philos[i]->meals_eaten = 0;
-		philos[i]->full = false;
 		philos[i]->last_mealtime = 0;
 		philos[i]->data = data;
 		i++;
@@ -106,11 +106,11 @@ bool	init_all_mutex(t_data *data)
 	while (i < data->nbr_of_philos)
 	{
 		data->forks[i] = malloc(sizeof(pthread_mutex_t));
-		data->philo_arr[i]->meal_lock = malloc(sizeof(pthread_mutex_t));
-		if (!data->forks[i] || !data->philo_arr[i]->meal_lock)
+		data->philo_arr[i]->philo_lock = malloc(sizeof(pthread_mutex_t));
+		if (!data->forks[i] || !data->philo_arr[i]->philo_lock)
 			return (false);
 		pthread_mutex_init(data->forks[i], NULL);
-		pthread_mutex_init(data->philo_arr[i]->meal_lock, NULL);
+		pthread_mutex_init(data->philo_arr[i]->philo_lock, NULL);
 		data->philo_arr[i]->left_fork = data->forks[i];
 		i++;
 	}

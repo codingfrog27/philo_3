@@ -19,9 +19,7 @@
 
 #include "philo.h"
 
-static void	start_simulation(t_data *data);
-void		cleanup_threads_and_end(t_data *data, bool full);
-static void	free_data(t_data *data);
+void	start_simulation(t_data *data);
 
 int	main(int argc, char **argv)
 {
@@ -37,20 +35,24 @@ int	main(int argc, char **argv)
 		return (printf(C_RED MALLOC_ERROR));
 	start_simulation(&data);
 	all_alive = monitor_philos(&data);
-	cleanup_threads_and_end(&data, all_alive);
+	cleanup_threads_and_end(&data, all_alive, data.nbr_of_philos);
 	return (0);
 }
 
-static void	start_simulation(t_data *data)
+void	start_simulation(t_data *data)
 {
 	int	i;
 
 	i = 0;
 	while (i < data->nbr_of_philos)
 	{
-		pthread_mutex_lock(data->philo_arr[i]->meal_lock);
-		pthread_create(data->philo_arr[i]->thread_id, NULL, philo_routine, \
-		(void *)data->philo_arr[i]); //protect!
+		pthread_mutex_lock(data->philo_arr[i]->philo_lock);
+		if (pthread_create(data->philo_arr[i]->thread_id, NULL, philo_routine, \
+		(void *)data->philo_arr[i]) != 0)
+		{
+			printf("ERROR: PTHREAD CREATE FAILURE\n");
+			cleanup_threads_and_end(data, false, i - 1);
+		}
 		i++;
 	}
 	i--;
@@ -58,52 +60,7 @@ static void	start_simulation(t_data *data)
 	while (i >= 0)
 	{
 		data->philo_arr[i]->last_mealtime = data->start_time;
-		pthread_mutex_unlock(data->philo_arr[i]->meal_lock);
+		pthread_mutex_unlock(data->philo_arr[i]->philo_lock);
 		i--;
 	}
-}
-
-//sleeps for a moment to let all threads finish exiting
-void	cleanup_threads_and_end(t_data *data, bool full)
-{
-	int	i;
-	pthread_mutex_lock(data->death_lock);
-	data->end_simulation = true;
-	pthread_mutex_unlock(data->death_lock); //change to lock per philo?
-	usleep(1000);
-	i = 0;
-	while (i < data->nbr_of_philos)
-	{
-		pthread_join(*data->philo_arr[i]->thread_id, NULL);
-		i++;
-	}
-	free_data(data);
-	if (full)
-		printf("EVERYONE FULL YIPPIE\n");
-}
-
-// do i want ifs at every free for safety? shouldnt be needed tho
-static void	free_data(t_data *data)
-{
-	int		i;
-	t_philo	*philo;
-
-	i = 0;
-	pthread_mutex_destroy(data->death_lock);
-	free(data->death_lock);
-	pthread_mutex_destroy(data->print_lock);
-	free(data->print_lock);
-	while (i < data->nbr_of_philos)
-	{
-		philo = data->philo_arr[i];
-		pthread_mutex_destroy(philo->meal_lock);
-		free(philo->meal_lock);
-		// pthread_mutex_destroy(philo->left_fork);
-		free(philo->left_fork);
-		free(philo->thread_id);
-		free(philo);
-		i++;
-	}
-	free(data->philo_arr);
-	free(data->forks);
 }

@@ -47,6 +47,20 @@ static const char	*no_colour_msgs[] = {"died", "is thinking", \
 						"is sleeping"};
 
 
+//do I wanna change this lock to the meal check lock? or another individual lock
+// ? Less bottleneck but also its 1 if check and more delay when philo dies
+bool	all_alive_and_hungry(t_philo *philo)
+{
+	bool	continue_sim;
+
+	continue_sim = true;
+	pthread_mutex_lock(philo->data->death_lock);
+	if (philo->data->end_simulation)
+		continue_sim = false;
+	pthread_mutex_unlock(philo->data->death_lock);
+	return (continue_sim);
+}
+
 // from monitoring.c
 
 	// int fd = open("test.txt", O_RDWR);
