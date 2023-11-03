@@ -70,5 +70,4 @@ void	kill_everyone(t_data *data)
 		pthread_mutex_unlock(data->philo_arr[i]->philo_lock);
 		i++;
 	}
-
 }

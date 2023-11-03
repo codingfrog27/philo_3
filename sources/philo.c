@@ -14,9 +14,7 @@
 
 bool		all_alive_and_hungry(t_philo *philo);
 static void	mealtime(t_philo *philo);
-// static void	sleeptime(t_philo *philo);
 static void	update_last_mealtime(t_philo *philo);
-
 
 // bool	colour_philo_print(t_philo *philo, t_msg_types msg_type)
 // {
@@ -25,15 +23,6 @@ static void	update_last_mealtime(t_philo *philo);
 // 						C_SPRGR"is sleeping"};
 // 	static const char	*colours[] = {C_DBLUE, C_LBLUE, C_GREEN, C_YELLOW,
 // 									C_ORANGE, C_PINK};
-
-// 	if (!all_alive_and_hungry(philo) && msg_type != death)
-// 		return (false);
-// 	pthread_mutex_lock(philo->data->print_lock);
-// 	printf("%li %s%i %s\n"C_RESET, time_since_start(philo->data),
-// 	colours[philo->id % 6], philo->id, msgs[msg_type]);
-// 	pthread_mutex_unlock(philo->data->print_lock);
-// 	return (true);
-// }
 
 bool	philo_print(t_philo *philo, t_msg_types msg_type)
 {
@@ -54,16 +43,22 @@ bool	philo_print(t_philo *philo, t_msg_types msg_type)
 	return (true);
 }
 
-
 void	*philo_routine(void *para)
 {
-	t_philo	*philo;
+	t_philo			*philo;
+	pthread_mutex_t	*tmp_fork;
 
+	tmp_fork = NULL;
 	philo = (t_philo *)para;
 	pthread_mutex_lock(philo->philo_lock);
 	pthread_mutex_unlock(philo->philo_lock);
 	if (philo->id % 2)
+	{
+		tmp_fork = philo->left_fork;
+		philo->left_fork = philo->right_fork;
+		philo->right_fork = tmp_fork;
 		coolsleep(philo->data->time_to_eat / 2);
+	}
 	while (1)
 	{
 		if (!philo_print(philo, thinking))
@@ -89,7 +84,6 @@ static void	mealtime(t_philo *philo)
 	pthread_mutex_unlock(philo->right_fork);
 }
 
-// could be thrown into mealtime, also can I do this b4 the print? ask around
 static void	update_last_mealtime(t_philo *philo)
 {
 	pthread_mutex_lock(philo->philo_lock);

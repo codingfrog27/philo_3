@@ -15,8 +15,6 @@
 static int	philatoi(char *str);
 static void	assign_right_forks(t_data *data);
 
-//pthread create not protected atm
-
 //so sad C doesn't allow you to while loop through struct membersm, could
 bool	parsing(t_data *data, char **argv, int argc)
 {
@@ -34,7 +32,6 @@ bool	parsing(t_data *data, char **argv, int argc)
 	if (data->nbr_of_philos == 0 || data->time_till_death == 0 || \
 	data->time_to_eat == 0 || data->sleep_time == 0 || data->meals_needed == 0)
 		return (false);
-
 	return (true);
 }
 
@@ -101,7 +98,7 @@ bool	init_all_mutex(t_data *data)
 	data->print_lock = malloc(sizeof(pthread_mutex_t));
 	if (!data->death_lock || !data->forks)
 		return (false);
-	pthread_mutex_init(data->print_lock, NULL); //protect!!
+	pthread_mutex_init(data->print_lock, NULL);
 	pthread_mutex_init(data->death_lock, NULL);
 	while (i < data->nbr_of_philos)
 	{

@@ -14,7 +14,6 @@
 
 static bool	is_alive(t_data *data, t_philo *philo);
 
-
 bool	monitor_philos(t_data *data)
 {
 	int	i;

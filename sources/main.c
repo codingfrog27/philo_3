@@ -26,7 +26,6 @@ int	main(int argc, char **argv)
 	t_data		data;
 	bool		all_alive;
 
-
 	if (argc < 5 || argc > 6 || !parsing(&data, argv, argc))
 		return (printf(C_RED PARSE_ERROR));
 	if (data.nbr_of_philos == 1)
