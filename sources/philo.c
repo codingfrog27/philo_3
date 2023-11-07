@@ -57,7 +57,7 @@ void	*philo_routine(void *para)
 		tmp_fork = philo->left_fork;
 		philo->left_fork = philo->right_fork;
 		philo->right_fork = tmp_fork;
-		coolsleep(philo->data->time_to_eat / 2);
+		philo_sleep(philo->data->time_to_eat / 2, philo);
 	}
 	while (1)
 	{
@@ -66,7 +66,8 @@ void	*philo_routine(void *para)
 		mealtime(philo);
 		if (!philo_print(philo, sleeping))
 			return (NULL);
-		coolsleep(philo->data->sleep_time);
+		if (!philo_sleep(philo->data->sleep_time, philo))
+			return (NULL);
 	}
 	return (NULL);
 }
@@ -79,7 +80,7 @@ static void	mealtime(t_philo *philo)
 	philo_print(philo, grabbing_fork);
 	update_last_mealtime(philo);
 	philo_print(philo, eating);
-	coolsleep(philo->data->time_to_eat);
+	philo_sleep(philo->data->time_to_eat, philo);
 	pthread_mutex_unlock(philo->left_fork);
 	pthread_mutex_unlock(philo->right_fork);
 }

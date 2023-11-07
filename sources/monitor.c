@@ -12,7 +12,6 @@
 
 #include "philo.h"
 
-static bool	is_alive(t_data *data, t_philo *philo);
 
 bool	monitor_philos(t_data *data)
 {
@@ -41,7 +40,7 @@ bool	monitor_philos(t_data *data)
 	}
 }
 
-static bool	is_alive(t_data *data, t_philo *philo)
+bool	is_alive(t_data *data, t_philo *philo)
 {
 	if (time_since_x(philo->last_mealtime) > data->time_till_death)
 	{

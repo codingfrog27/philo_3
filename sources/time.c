@@ -32,11 +32,23 @@ long	time_since_start(t_data *data)
 	return (timestamp() - data->start_time);
 }
 
-void	coolsleep(useconds_t sleep_time)
+bool	philo_sleep(useconds_t sleep_time, t_philo *philo)
 {
 	long		start_time;
+	int			death_check_count;
 
 	start_time = timestamp();
 	while (timestamp() - start_time < sleep_time)
+	{
 		usleep(250);
+		death_check_count++;
+		if (!death_check_count % 3)
+		{
+			pthread_mutex_lock(philo->philo_lock);
+			if (!is_alive(philo->data, philo)) //results in double free
+				return (false);
+			pthread_mutex_unlock(philo->philo_lock);
+		}
+	}
+	return (true);
 }

@@ -82,15 +82,15 @@ bool	philo_init(t_data	*data);
 void	*philo_routine(void *para);
 bool	philo_print(t_philo *philo, t_msg_types msg_type);
 bool	monitor_philos(t_data *data);
+bool	is_alive(t_data *data, t_philo *philo);
 
 //cleanup
 void	cleanup_threads_and_end(t_data *data, bool full, int nbr);
 void	kill_everyone(t_data *data);
 
-
 //time
 long	time_since_x(long start);
 long	time_since_start(t_data *data);
 long	timestamp(void);
-void	coolsleep(useconds_t sleep_time);
+bool	philo_sleep(useconds_t sleep_time, t_philo *philo);
 #endif // !PHILO_H
