@@ -14,8 +14,8 @@
 
 NAME 			:= philo
 CC				= gcc
-COMPIL_FLAGS	?= -Wall -Wextra -Werror
-DEBUG_FLAGS		?= -fsanitize=thread
+COMPIL_FLAGS	?= -Wall -Wextra -Werror -g -fsanitize=thread
+# DEBUG_FLAGS		?=
 LINKFLAGS 		?= -I include
 #sources and objects -------------
 
@@ -33,17 +33,17 @@ SOURCES	:=	$(addprefix $(SRC_DIR), $(SOURCEFILES))
 OBJS	:=	$(addprefix $(OBJ_DIR), $(OFILES))
 
 #-----------------Utils-----------------
-debug: $(OBJ_DIR) $(OBJS) $(SRCS)
-	@printf "$(C_GREEN)compiling! $(C_ORANGE)$@ debug\n"
-	@$(CC) $(OBJS) $(COMPIL_FLAGS) -o $(NAME) $(LINKFLAGS) $(DEBUG_FLAGS)
-	@printf "\n **$(C_BOLD)$(C_CYAN)all done <3$(C_ORANGE)s**\n$(C_RESET)"
+# debug: $(OBJ_DIR) $(OBJS) $(SRCS)
+# 	@printf "$(C_GREEN)compiling! $(C_ORANGE)$@ debug\n"
+# 	@$(CC) $(OBJS) $(COMPIL_FLAGS) -o $(NAME) $(LINKFLAGS) $(DEBUG_FLAGS)
+# 	@printf "\n **$(C_BOLD)$(C_CYAN)all done <3$(C_ORANGE)s**\n$(C_RESET)"
 #-----------------targets---------------
 
 all: $(NAME)
 
 $(NAME): $(OBJ_DIR) $(OBJS) $(SRCS)
 	@printf "$(C_GREEN)compiling! $(C_ORANGE)$@\n"
-	@$(CC) $(OBJS) $(COMPIL_FLAGS) -o $@ $(LINKFLAGS) -g
+	@$(CC) $(OBJS) $(COMPIL_FLAGS) -o $@ $(LINKFLAGS) -g -fsanitize=thread
 	@printf "\n **$(C_BOLD)$(C_CYAN)all done <3$(C_ORANGE)s**\n$(C_RESET)"
 
 $(OBJ_DIR)%.o : $(SRC_DIR)%.c | $(OBJ_DIR)
@@ -65,7 +65,7 @@ re: fclean all
 #-----------------easy testing---------------
 
 test: $(NAME) $(OBJS) $(SRCS)
-	@./philo 4 410 200 200 20
+	@./philo 400 510 200 200 20
 
 #//4 410 200 200
 #ARGS ARE <NB OF PHILOS> 2 <DIE TIME> 3 <EAT TIME> 4<SLEEL TIME> 5<MAX MEALS>

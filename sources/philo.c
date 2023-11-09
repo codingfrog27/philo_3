@@ -50,8 +50,8 @@ void	*philo_routine(void *para)
 
 	tmp_fork = NULL;
 	philo = (t_philo *)para;
-	pthread_mutex_lock(philo->philo_lock);
-	pthread_mutex_unlock(philo->philo_lock);
+	pthread_mutex_lock(philo->data->print_lock);
+	pthread_mutex_unlock(philo->data->print_lock);
 	if (philo->id % 2)
 	{
 		tmp_fork = philo->left_fork;

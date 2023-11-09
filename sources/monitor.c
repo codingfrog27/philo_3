@@ -47,7 +47,7 @@ bool	is_alive(t_data *data, t_philo *philo)
 		philo->alive = false;
 		pthread_mutex_unlock(philo->philo_lock);
 		kill_everyone(data);
-		usleep(1000);
+		usleep(2500);
 		philo_print(philo, death);
 		return (false);
 	}

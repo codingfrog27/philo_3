@@ -40,16 +40,19 @@ static void	free_data(t_data *data)
 	t_philo	*philo;
 
 	i = 0;
-	pthread_mutex_destroy(data->death_lock);
-	free(data->death_lock);
+	// pthread_mutex_destroy(data->death_lock);
+	// free(data->death_lock);
 	pthread_mutex_destroy(data->print_lock);
 	free(data->print_lock);
 	while (i < data->nbr_of_philos)
 	{
 		philo = data->philo_arr[i];
 		pthread_mutex_destroy(philo->philo_lock);
+		if (philo->id % 2)
+			free(philo->right_fork);
+		else
+			free(philo->left_fork);
 		free(philo->philo_lock);
-		free(philo->left_fork);
 		free(philo->thread_id);
 		free(philo);
 		i++;

@@ -43,9 +43,9 @@ void	start_simulation(t_data *data)
 	int	i;
 
 	i = 0;
+	pthread_mutex_lock(data->print_lock);
 	while (i < data->nbr_of_philos)
 	{
-		pthread_mutex_lock(data->philo_arr[i]->philo_lock);
 		if (pthread_create(data->philo_arr[i]->thread_id, NULL, philo_routine, \
 		(void *)data->philo_arr[i]) != 0)
 		{
@@ -59,7 +59,7 @@ void	start_simulation(t_data *data)
 	while (i >= 0)
 	{
 		data->philo_arr[i]->last_mealtime = data->start_time;
-		pthread_mutex_unlock(data->philo_arr[i]->philo_lock);
 		i--;
 	}
+	pthread_mutex_unlock(data->print_lock);
 }

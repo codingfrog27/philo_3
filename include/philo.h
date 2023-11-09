@@ -67,7 +67,7 @@ struct s_data
 	long			meals_needed;
 	long			full_philos;
 	long			start_time;
-	pthread_mutex_t	*death_lock;
+	// pthread_mutex_t	*death_lock;
 	pthread_mutex_t	*print_lock;
 	pthread_mutex_t	**forks;
 	t_philo			**philo_arr;
