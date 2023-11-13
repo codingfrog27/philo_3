@@ -1,3 +1,34 @@
+VINCENT THE GOAT
+
+-sleep in monitoring
+-usleep calls in philo sleep should be bigger with larger amount of philos
+	since the more philos the less computing resources you can use for more Acc
+	sleep calls (100 + nbr of philos * 5)
+
+-unlock print lock if thread creation fails
+
+-EXTRA
+a priority system would make it a lot better
+
+first if death time is bigger than mealtime * 3 dont go into the system
+if not check if time to die > time to eat * something cause if so u should sleep
+so other philo can take th efork
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ALMOST ALMOST
 1 done, protection also done, still not fast enough so COULD try duco strat
 which is: make the forks mutex protected bools and let a grab fork function

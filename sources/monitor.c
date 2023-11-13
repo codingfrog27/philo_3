@@ -12,7 +12,6 @@
 
 #include "philo.h"
 
-
 bool	monitor_philos(t_data *data)
 {
 	int	i;
@@ -20,6 +19,7 @@ bool	monitor_philos(t_data *data)
 
 	i = 0;
 	full_philos = 0;
+	usleep(10000);
 	while (1)
 	{
 		while (i < data->nbr_of_philos)
@@ -37,6 +37,7 @@ bool	monitor_philos(t_data *data)
 			return (true);
 		i = 0;
 		full_philos = 0;
+		usleep(500);
 	}
 }
 

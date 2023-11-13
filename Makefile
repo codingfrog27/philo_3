@@ -14,7 +14,7 @@
 
 NAME 			:= philo
 CC				= gcc
-COMPIL_FLAGS	?= -Wall -Wextra -Werror -g -fsanitize=thread
+COMPIL_FLAGS	?= -Wall -Wextra -Werror #-g -fsanitize=thread
 # DEBUG_FLAGS		?=
 LINKFLAGS 		?= -I include
 #sources and objects -------------

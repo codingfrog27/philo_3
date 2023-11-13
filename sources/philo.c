@@ -37,7 +37,7 @@ bool	philo_print(t_philo *philo, t_msg_types msg_type)
 	if (!alive && msg_type != death)
 		return (false);
 	pthread_mutex_lock(philo->data->print_lock);
-	printf("%li %i %s\n"C_RESET, time_since_start(philo->data), \
+	printf("%li %i %s\n", time_since_start(philo->data), \
 	philo->id, msgs[msg_type]);
 	pthread_mutex_unlock(philo->data->print_lock);
 	return (true);

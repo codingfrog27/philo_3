@@ -35,13 +35,14 @@ long	time_since_start(t_data *data)
 bool	philo_sleep(useconds_t sleep_time, t_philo *philo)
 {
 	long		start_time;
+	long		nap_time;
 	// int			death_check_count;
-	(void)philo;
 
 	start_time = timestamp();
-	while (timestamp() - start_time < sleep_time)
+	nap_time = 100 + (philo->data->nbr_of_philos * 5);
+	while ((timestamp() - start_time) < sleep_time)
 	{
-		usleep(250);
+		usleep(nap_time);
 		// death_check_count++;
 		// if (!death_check_count % 3)
 		// {

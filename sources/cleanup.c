@@ -20,6 +20,7 @@ void	cleanup_threads_and_end(t_data *data, bool full, int nbr)
 	int	i;
 
 	i = 0;
+	// if nbr != data->philo_num -> unlock print
 	if (full)
 		kill_everyone(data);
 	while (i < nbr)
