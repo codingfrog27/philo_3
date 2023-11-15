@@ -36,25 +36,14 @@ bool	philo_sleep(useconds_t sleep_time, t_philo *philo)
 {
 	long		start_time;
 	long		nap_time;
-	// int			death_check_count;
 
 	start_time = timestamp();
 	nap_time = 100 + (philo->data->nbr_of_philos * 5);
 	while ((timestamp() - start_time) < sleep_time)
 	{
 		usleep(nap_time);
-		// death_check_count++;
-		// if (!death_check_count % 3)
-		// {
-		// 	pthread_mutex_lock(philo->philo_lock);
-		// 	// if (!is_alive(philo->data, philo)) //results in double free
-		// 	if (!philo->alive)
-		// 	{
-		// 		pthread_mutex_unlock(philo->philo_lock);
-		// 		return (false);
-		// 	}
-		// 	pthread_mutex_unlock(philo->philo_lock);
-		// }
+		if (!is_alive(philo))
+			return (false);
 	}
 	return (true);
 }

@@ -20,7 +20,8 @@ void	cleanup_threads_and_end(t_data *data, bool full, int nbr)
 	int	i;
 
 	i = 0;
-	// if nbr != data->philo_num -> unlock print
+	if (nbr < data->nbr_of_philos)
+		pthread_mutex_unlock(data->print_lock);
 	if (full)
 		kill_everyone(data);
 	while (i < nbr)
@@ -41,8 +42,6 @@ static void	free_data(t_data *data)
 	t_philo	*philo;
 
 	i = 0;
-	// pthread_mutex_destroy(data->death_lock);
-	// free(data->death_lock);
 	pthread_mutex_destroy(data->print_lock);
 	free(data->print_lock);
 	while (i < data->nbr_of_philos)

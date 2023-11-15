@@ -93,13 +93,11 @@ bool	init_all_mutex(t_data *data)
 	int		i;
 
 	i = 0;
-	// data->death_lock = malloc(sizeof(pthread_mutex_t));
 	data->forks = malloc(sizeof(pthread_mutex_t *) * (data->nbr_of_philos));
 	data->print_lock = malloc(sizeof(pthread_mutex_t));
-	if (!data->forks) //check death lock if end up using
+	if (!data->forks)
 		return (false);
 	pthread_mutex_init(data->print_lock, NULL);
-	// pthread_mutex_init(data->death_lock, NULL);
 	while (i < data->nbr_of_philos)
 	{
 		data->forks[i] = malloc(sizeof(pthread_mutex_t));
@@ -129,4 +127,3 @@ static void	assign_right_forks(t_data *data)
 	}
 	philos[i]->right_fork = philos[0]->left_fork;
 }
-//last philo has switched forks (aka grabs right first to avoid deadlock)

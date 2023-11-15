@@ -23,10 +23,10 @@
 # include <sys/time.h>
 
 # define PARSE_ERROR "ERROR, input could not be parsed. Make sure to give 5 or \
-6 numeric args\n"
+6 positive interger args\n"
 
-# define SINGLE_PHILO_ERR C_RED"Single philo dies sad and\
- alone without ever eating 😭\n"C_RESET
+# define SINGLE_PHILO_ERR "Single philo dies sad and \
+ alone without ever eating 😭\n"
 
 # define MALLOC_ERROR "ERROR occured when allocating memory\n"
 
@@ -67,7 +67,6 @@ struct s_data
 	long			meals_needed;
 	long			full_philos;
 	long			start_time;
-	// pthread_mutex_t	*death_lock;
 	pthread_mutex_t	*print_lock;
 	pthread_mutex_t	**forks;
 	t_philo			**philo_arr;
@@ -82,7 +81,7 @@ bool	philo_init(t_data	*data);
 void	*philo_routine(void *para);
 bool	philo_print(t_philo *philo, t_msg_types msg_type);
 bool	monitor_philos(t_data *data);
-bool	is_alive(t_data *data, t_philo *philo);
+bool	is_alive(t_philo *philo);
 
 //cleanup
 void	cleanup_threads_and_end(t_data *data, bool full, int nbr);
