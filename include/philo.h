@@ -35,7 +35,7 @@ typedef struct s_data	t_data;
 typedef struct s_philo
 {
 	bool			full;
-	bool			alive;
+	bool			alive; //can be removed :)
 	int				id;
 	int				meals_eaten;
 	long			last_mealtime;
@@ -70,6 +70,7 @@ struct s_data
 	pthread_mutex_t	*print_lock;
 	pthread_mutex_t	**forks;
 	t_philo			**philo_arr;
+	bool			all_alive;
 };
 
 //init
@@ -91,5 +92,5 @@ void	kill_everyone(t_data *data);
 long	time_since_x(long start);
 long	time_since_start(t_data *data);
 long	timestamp(void);
-bool	philo_sleep(useconds_t sleep_time, t_philo *philo);
+bool	philo_sleep(long sleep_time, t_philo *philo);
 #endif // !PHILO_H

@@ -12,18 +12,12 @@
 
 #include "philo.h"
 
-bool		all_alive_and_hungry(t_philo *philo);
 static void	mealtime(t_philo *philo);
 static void	update_last_mealtime(t_philo *philo);
-
-// bool	colour_philo_print(t_philo *philo, t_msg_types msg_type)
-// {
-// 	static const char	*msgs[] = {C_RED"died", C_LCYAN"is thinking",
-// 						C_LVIOLET"has taken a fork", C_CHRT"is eating",
-// 						C_SPRGR"is sleeping"};
 // 	static const char	*colours[] = {C_DBLUE, C_LBLUE, C_GREEN, C_YELLOW,
 // 									C_ORANGE, C_PINK};
 
+//
 bool	philo_print(t_philo *philo, t_msg_types msg_type)
 {
 	static const char	*msgs[] = {"died", "is thinking", \
@@ -31,17 +25,35 @@ bool	philo_print(t_philo *philo, t_msg_types msg_type)
 						"is sleeping"};
 	bool				alive;
 
-	pthread_mutex_lock(philo->philo_lock);
-	alive = philo->alive;
-	pthread_mutex_unlock(philo->philo_lock);
-	if (!alive && msg_type != death)
-		return (false);
 	pthread_mutex_lock(philo->data->print_lock);
-	printf("%li %i %s\n", time_since_start(philo->data), \
-	philo->id, msgs[msg_type]);
+	alive = philo->data->all_alive;
+	if (alive)
+	{
+		printf("%li %i %s\n", time_since_start(philo->data), \
+		philo->id, msgs[msg_type]);
+	}
 	pthread_mutex_unlock(philo->data->print_lock);
-	return (true);
+	return (alive);
 }
+// bool	philo_print(t_philo *philo, t_msg_types msg_type)
+// {
+// 	static const char	*msgs[] = {"died", "is thinking",
+// 						"has taken a fork", "is eating",
+// 						"is sleeping"};
+// 	bool				alive;
+
+// 	pthread_mutex_lock(philo->philo_lock);
+// 	alive = philo->alive;
+// 	pthread_mutex_unlock(philo->philo_lock);
+// 	pthread_mutex_lock(philo->data->print_lock);
+// 	if (alive)
+// 	{
+// 		printf("%li %i %s\n", time_since_start(philo->data),
+// 		philo->id, msgs[msg_type]);
+// 	}
+// 	pthread_mutex_unlock(philo->data->print_lock);
+// 	return (alive);
+// }
 
 void	*philo_routine(void *para)
 {

@@ -32,18 +32,21 @@ long	time_since_start(t_data *data)
 	return (timestamp() - data->start_time);
 }
 
-bool	philo_sleep(useconds_t sleep_time, t_philo *philo)
+bool	philo_sleep(long sleep_time, t_philo *philo)
 {
+	int			i;
 	long		start_time;
 	long		nap_time;
 
+	i = 0;
 	start_time = timestamp();
-	nap_time = 100 + (philo->data->nbr_of_philos * 5);
+	nap_time = 100 + (philo->data->nbr_of_philos * 10);
 	while ((timestamp() - start_time) < sleep_time)
 	{
 		usleep(nap_time);
-		if (!is_alive(philo))
+		if (i % 3 == 0 && !is_alive(philo))
 			return (false);
+		i++;
 	}
 	return (true);
 }

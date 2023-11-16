@@ -27,6 +27,7 @@ bool	parsing(t_data *data, char **argv, int argc)
 	data->sleep_time = philatoi(argv[i++]);
 	data->full_philos = 0;
 	data->meals_needed = -1;
+	data->all_alive = true;
 	if (argc == 6)
 		data->meals_needed = philatoi(argv[i]);
 	if (data->nbr_of_philos == 0 || data->time_till_death == 0 || \

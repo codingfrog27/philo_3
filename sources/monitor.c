@@ -39,7 +39,7 @@ bool	monitor_philos(t_data *data)
 			return (true);
 		i = 0;
 		full_philos = 0;
-		usleep(500);
+		usleep(1000);
 	}
 }
 
@@ -49,9 +49,13 @@ static bool	is_alive_monitor(t_data *data, t_philo *philo)
 	{
 		philo->alive = false;
 		pthread_mutex_unlock(philo->philo_lock);
-		kill_everyone(data);
-		usleep(2500);
-		philo_print(philo, death);
+		// kill_everyone(data);
+		// usleep(1000);
+		pthread_mutex_lock(data->print_lock);
+		printf("%li %i died\n", time_since_start(philo->data), \
+		philo->id);
+		data->all_alive = false;
+		pthread_mutex_unlock(data->print_lock);
 		return (false);
 	}
 	return (true);
@@ -70,4 +74,21 @@ bool	is_alive(t_philo *philo)
 	}
 	pthread_mutex_unlock(philo->philo_lock);
 	return (alive);
+}
+
+void	kill_everyone(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	pthread_mutex_lock(data->print_lock);
+	data->all_alive = false;
+	pthread_mutex_unlock(data->print_lock);
+	while (i < data->nbr_of_philos)
+	{
+		pthread_mutex_lock(data->philo_arr[i]->philo_lock);
+		data->philo_arr[i]->alive = false;
+		pthread_mutex_unlock(data->philo_arr[i]->philo_lock);
+		i++;
+	}
 }

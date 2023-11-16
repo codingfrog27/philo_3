@@ -60,17 +60,3 @@ static void	free_data(t_data *data)
 	free(data->philo_arr);
 	free(data->forks);
 }
-
-void	kill_everyone(t_data *data)
-{
-	int	i;
-
-	i = 0;
-	while (i < data->nbr_of_philos)
-	{
-		pthread_mutex_lock(data->philo_arr[i]->philo_lock);
-		data->philo_arr[i]->alive = false;
-		pthread_mutex_unlock(data->philo_arr[i]->philo_lock);
-		i++;
-	}
-}
