@@ -1,3 +1,21 @@
+bool	assign_philo_struct_members(t_data *data, int i, t_philo **philos, \
+pthread_t *thread_ptr)
+{
+	philos[i] = malloc(sizeof(t_philo));
+	thread_ptr = malloc(sizeof(pthread_t));
+	if (!philos[i] || !thread_ptr)
+		return (false);
+	philos[i]->thread_id = thread_ptr;
+	philos[i]->full = false;
+	philos[i]->id = i + 1;
+	philos[i]->meals_eaten = 0;
+	philos[i]->last_mealtime = 0;
+	philos[i]->data = data;
+	if (data->time_till_death > (data->time_to_eat * 3))
+		philos[i]->social_eating = true;
+}
+
+
 TESTING
 
 4 420 200 200
